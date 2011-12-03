@@ -1,47 +1,77 @@
 package chat.serveur;
 
+import java.net.InetAddress;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import chat.commun.Message;
 import chat.commun.Utilisateur;
 
-public class ServeurImpl implements Serveur {
+public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
-    private List<Message> messageList = new ArrayList<>();
+    private static final long serialVersionUID = 1521779512098629525L;
+    protected ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<>();
+    protected ArrayList<Message> listeMessages = new ArrayList<>();
 
-    @Override
-    public void bye(Utilisateur utilisateur) {
-        // TODO Auto-generated method stub
-        System.out.println("Utilisateur " + utilisateur.toString()
-                + " has quit.");
+    public static int port = 70;
+
+    protected ServeurImpl() throws RemoteException {
+        super();
+    }
+
+    public static void main(String args[]) {
+        String URL;
+        try {
+            // Cr�ation du serveur de nom - rmiregistry
+            LocateRegistry.createRegistry(port);
+            // Cr�ation d'une instance de l'objet serveur
+            Serveur obj = new ServeurImpl();
+            // Calcul de l'URL du serveur
+            URL = "//" + InetAddress.getLocalHost().getHostName() + ":" + port
+                    + "/serveur";
+            Naming.rebind(URL, obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public Utilisateur connect(String id) {
-        // TODO Auto-generated method stub
-        System.out.println("Utilisateur " + id + " has connected.");
-        return new Utilisateur(id);
+    public Utilisateur connect(String id) throws RemoteException {
+        Utilisateur nouveau = new Utilisateur(id);
+        if (this.listeUtilisateurs.contains(nouveau))
+            throw new RemoteException("Cet id est déjà utilisé");
+        this.listeUtilisateurs.add(nouveau);
+        return nouveau;
+
     }
 
     @Override
-    public List<Message> getMessages() {
-        // TODO Auto-generated method stub
-        return this.messageList;
+    public void send(String message, Utilisateur expediteur)
+            throws RemoteException {
+        this.listeMessages.add(new Message(message, expediteur));
     }
 
     @Override
-    public void send(Message message, Utilisateur expediteur) {
-        // TODO Auto-generated method stub
-        System.out.println("Utilisateur " + expediteur.toString()
-                + " has send this : " + message.toString());
+    public void bye(Utilisateur utilisateur) throws RemoteException {
+        this.listeUtilisateurs.remove(utilisateur);
     }
 
     @Override
-    public List<Utilisateur> who() {
-        // TODO Auto-generated method stub
-        System.out.println("Asked for users");
-        return new ArrayList<>();
+    public ArrayList<Utilisateur> who() throws RemoteException {
+        return this.listeUtilisateurs;
     }
 
+    @Override
+    public ArrayList<Message> getMessages(Date date) throws RemoteException {
+        ArrayList<Message> listeTemp = new ArrayList<>();
+        for (Message m : this.listeMessages) {
+            if (m.getDateEmission().after(date))
+                listeTemp.add(m);
+        }
+        return listeTemp;
+    }
 }

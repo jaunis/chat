@@ -1,29 +1,42 @@
 package chat.commun;
 
-public class Utilisateur {
+import java.io.Serializable;
 
-    private String id;
-    private boolean connected;
+public class Utilisateur implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    protected String id;
 
     public Utilisateur(String idIn) {
         this.id = idIn;
-        this.connected = true;
     }
 
-    public void setID(String idIn) {
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * @param idIn
+     *            the id to set
+     */
+    public void setId(String idIn) {
         this.id = idIn;
     }
 
-    public boolean isConnected() {
-        return this.connected;
-    }
-
-    public void disconnect() {
-        this.connected = false;
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Utilisateur) {
+            return ((Utilisateur) o).getId().equals(this.id);
+        }
+        return false;
     }
 
     @Override
-    public String toString() {
-        return this.id;
+    public int hashCode() {
+        // TODO Auto-generated method stub
+        return super.hashCode();
     }
 }

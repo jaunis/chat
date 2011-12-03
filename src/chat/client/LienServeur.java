@@ -1,5 +1,7 @@
 package chat.client;
 
+import java.rmi.RemoteException;
+
 import chat.commun.Message;
 import chat.serveur.Serveur;
 
@@ -16,7 +18,12 @@ public class LienServeur {
 
     public void bye() {
         if (this.client.isConnected()) {
-            this.serveur.bye(this.client.getUtilisateur());
+            try {
+                this.serveur.bye(this.client.getUtilisateur());
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             this.client.disconnect();
             this.client
                     .getVisualisateur()
@@ -28,20 +35,32 @@ public class LienServeur {
     }
 
     public void connect(String userID) {
-        this.client.setUtilisateur(this.serveur.connect(userID));
+        try {
+            this.client.setUtilisateur(this.serveur.connect(userID));
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         this.client.getVisualisateur().getTextViewer()
                 .append("Utilisateur " + userID + " has connected.");
     }
 
     public void getMessages() {
         if (this.client.isConnected()) {
-            this.client.setMessages(this.serveur.getMessages());
+            // FIXME : look at this.
+            try {
+                this.client.setMessages(this.serveur.getMessages(null));
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 
     public void sendMessage(Message message) {
         if (this.client.isConnected()) {
-            this.serveur.send(message, this.client.getUtilisateur());
+            // FIXME : change this.
+            // this.serveur.send(message, this.client.getUtilisateur());
 
             this.client
                     .getVisualisateur()
@@ -56,7 +75,12 @@ public class LienServeur {
 
     public void who() {
         if (this.client.isConnected()) {
-            this.client.setListeUtilisateurs(this.serveur.who());
+            try {
+                this.client.setListeUtilisateurs(this.serveur.who());
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
             this.client.getVisualisateur().getTextViewer()
                     .append("Asked for users");

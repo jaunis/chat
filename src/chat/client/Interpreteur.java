@@ -53,8 +53,9 @@ public class Interpreteur {
     }
 
     private void traiterMessage(String texte) {
-        Message message = new Message(texte, this.client);
-        this.client.getLienServeur().sendMessage(message);
+        //FIXME : change this !
+        // Message message = new Message(texte, this.client);
+        // this.client.getLienServeur().sendMessage(message);
     }
 
     public void traiterTexte(String texte) {

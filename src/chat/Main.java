@@ -1,8 +1,5 @@
 package chat;
 
-import chat.client.Client;
-import chat.serveur.ServeurImpl;
-
 public class Main {
 
     /**
@@ -10,8 +7,7 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        // TODO : how to initialize this serveur ?
-        ServeurImpl serveur = new ServeurImpl();
-        Client client = new Client(serveur);
+        // FIXME
+        // Client client = new Client(new ServeurImpl());
     }
 }
