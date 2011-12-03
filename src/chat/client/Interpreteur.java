@@ -48,12 +48,12 @@ public class Interpreteur {
                 this.client.getLienServeur().who();
             }
         } catch (EmptyLineException e) {
-            // If the line is empty, do nothing.
+            // Si la ligne est vide, ne rien faire :) (Je déteste l'anglais)
         }
     }
 
     private void traiterMessage(String texte) {
-        //FIXME : change this !
+        //FIXME : changer ceci ! (Foutus anglais)
         // Message message = new Message(texte, this.client);
         // this.client.getLienServeur().sendMessage(message);
     }
