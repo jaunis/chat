@@ -1,13 +1,6 @@
 package chat.client;
 
-import chat.serveur.Serveur;
-
 public class Updater extends Thread {
-
-    /**
-     * Interface avec le serveur.
-     */
-    Serveur serveur;
 
     /**
      * Client actuel.
@@ -21,16 +14,21 @@ public class Updater extends Thread {
      * @param serveurIn
      *            le serveur
      */
-    public Updater(Client clientIn, Serveur serveurIn) {
+    public Updater(Client clientIn) {
         super();
         this.client = clientIn;
-        this.serveur = serveurIn;
     }
 
     @Override
     public void run() {
         while (true) {
-            this.client.addMessages(this.serveur.getMessages());
+            this.client.getLienServeur().getMessages();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 }

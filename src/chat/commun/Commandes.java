@@ -5,13 +5,21 @@ import java.util.List;
 
 public class Commandes {
 
-    private static final String connect = "connect";
+    public static final String connect = "connect";
 
-    private static final String bye = "bye";
+    public static final String bye = "bye";
 
-    private static final String who = "who";
+    public static final String who = "who";
 
     private static List<String> listeMotsCles;
+
+    public static List<String> getListeMotsCles() {
+        if (!Commandes.isInit()) {
+            Commandes.init();
+        }
+
+        return Commandes.listeMotsCles;
+    }
 
     private static void init() {
         Commandes.listeMotsCles = new ArrayList<>();
@@ -22,13 +30,5 @@ public class Commandes {
 
     private static boolean isInit() {
         return Commandes.listeMotsCles == null;
-    }
-
-    public static List<String> getListeMotsCles() {
-        if (!Commandes.isInit()) {
-            Commandes.init();
-        }
-
-        return Commandes.listeMotsCles;
     }
 }

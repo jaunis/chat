@@ -15,18 +15,12 @@ public class GestionnaireTexte extends Thread {
     private Client client;
 
     /**
-     * L'interpréteur de commandes.
-     */
-    private Interpreteur interpreteur;
-
-    /**
      * Constructeur.
      * @param interpreteurIn
      */
-    public GestionnaireTexte(Client clientIn, Interpreteur interpreteurIn) {
+    public GestionnaireTexte(Client clientIn) {
         super();
         this.client = clientIn;
-        this.interpreteur = interpreteurIn;
     }
 
     /**
@@ -37,8 +31,8 @@ public class GestionnaireTexte extends Thread {
     public void run() {
         while (true) {
             try {
-                this.interpreteur.traiterCommande(String
-                        .valueOf((char) System.in.read()));
+                this.client.getInterpreteur().traiterTexte(
+                        String.valueOf((char) System.in.read()));
             } catch (IOException e) {
                 // TODO
                 e.printStackTrace();

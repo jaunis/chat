@@ -14,7 +14,23 @@ public class LienServeur {
         this.serveur = serveurIn;
     }
 
+    public void bye() {
+        this.serveur.bye(this.client.getUtilisateur());
+    }
+
+    public void connect(String userID) {
+        this.serveur.connect(userID);
+    }
+
+    public void getMessages() {
+        this.client.addMessages(this.serveur.getMessages());
+    }
+
     public void sendMessage(Message message) {
         this.serveur.send(message, this.client.getUtilisateur());
+    }
+
+    public void who() {
+        this.client.setListeUtilisateurs(this.serveur.who());
     }
 }
