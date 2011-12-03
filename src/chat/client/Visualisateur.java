@@ -1,10 +1,11 @@
 package chat.client;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.util.List;
 
-import javax.swing.InputVerifier;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -21,21 +22,27 @@ public class Visualisateur extends JFrame {
 
     private JTextArea textViewer;
     private JTextField textInput;
+    private JPanel panel;
 
     public Visualisateur(Client clientIn) {
         super();
+        this.setTitle("Client");
         this.setMinimumSize(new Dimension(500, 500));
         this.setPreferredSize(new Dimension(500, 500));
 
         this.client = clientIn;
-
+        
+        this.panel = new JPanel();
+        this.panel.setLayout(new FlowLayout());
+        this.add(this.panel);
+        
         this.textViewer = new JTextArea();
         this.textViewer.setPreferredSize(new Dimension(150, 50));
-        this.add(this.textViewer);
+        this.panel.add(this.textViewer);
 
         this.textInput = new JTextField();
         this.textInput.setPreferredSize(new Dimension(100, 20));
-        this.add(this.textInput);
+        this.panel.add(this.textInput);
 
         this.setVisible(true);
     }

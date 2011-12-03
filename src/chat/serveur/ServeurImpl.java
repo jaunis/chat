@@ -19,7 +19,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
     public static int port = 70;
 
-    protected ServeurImpl() throws RemoteException {
+    public ServeurImpl() throws RemoteException {
         super();
     }
 

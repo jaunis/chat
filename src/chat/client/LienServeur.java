@@ -43,6 +43,7 @@ public class LienServeur {
         }
         this.client.getVisualisateur().getTextViewer()
                 .append("Utilisateur " + userID + " has connected.");
+        //this.client.getVisualisateur().repaint();
     }
 
     public void getMessages() {
@@ -57,7 +58,7 @@ public class LienServeur {
         }
     }
 
-    public void sendMessage(Message message) {
+    public void sendMessage(String message) {
         if (this.client.isConnected()) {
             // FIXME : change this.
             // this.serveur.send(message, this.client.getUtilisateur());
@@ -67,7 +68,7 @@ public class LienServeur {
                     .getTextViewer()
                     .append("Utilisateur "
                             + this.client.getUtilisateur().toString()
-                            + " has send this : " + message.toString());
+                            + " has send this : " + message);
 
             this.client.getVisualisateur().repaint();
         }
