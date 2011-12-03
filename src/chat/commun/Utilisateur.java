@@ -1,14 +1,17 @@
 package chat.commun;
 
-public class Utilisateur 
+import java.io.Serializable;
+
+
+public class Utilisateur implements Serializable
 {
-	protected String id;
-	protected boolean connecte;
 	
+	private static final long serialVersionUID = -4050045596232047659L;
+	protected String id;
+			
 	public Utilisateur(String id)
 	{
 		this.id = id;
-		connecte = true;
 	}
 	/**
 	 * @return the id
@@ -22,17 +25,14 @@ public class Utilisateur
 	public void setId(String id) {
 		this.id = id;
 	}
-	/**
-	 * @return the connecte
-	 */
-	public boolean isConnecte() {
-		return connecte;
-	}
-	/**
-	 * @param connecte the connecte to set
-	 */
-	public void setConnecte(boolean connecte) {
-		this.connecte = connecte;
-	}
 	
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o instanceof Utilisateur)
+		{
+			return ((Utilisateur)o).getId().equals(id);
+		}
+		else return false;
+	}
 }

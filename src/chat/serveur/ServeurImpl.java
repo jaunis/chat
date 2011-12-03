@@ -1,40 +1,66 @@
 package chat.serveur;
 
-import java.util.List;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Date;
 
 import chat.commun.Message;
 import chat.commun.Utilisateur;
 
-public class ServeurImpl implements Serveur {
+public class ServeurImpl extends UnicastRemoteObject implements Serveur 
+{
+	private static final long serialVersionUID = 1521779512098629525L;
 
+	protected ServeurImpl() throws RemoteException 
+	{
+		super();
+	}
+
+	protected ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<Utilisateur>();
+	protected ArrayList<Message> listeMessages = new ArrayList<Message>();
+	
 	@Override
-	public Utilisateur connect(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Utilisateur connect(String id)  throws RemoteException
+	{
+		Utilisateur nouveau = new Utilisateur(id);
+		if(listeUtilisateurs.contains(nouveau)) 
+				throw new RemoteException("Cet id est déjà utilisé");
+		else
+		{
+			listeUtilisateurs.add(nouveau);
+			return nouveau;
+		}
+		
 	}
 
 	@Override
-	public void send(Message message, Utilisateur expediteur) {
-		// TODO Auto-generated method stub
-
+	public void send(String message, Utilisateur expediteur)  throws RemoteException
+	{
+		listeMessages.add(new Message(message, expediteur));
 	}
 
 	@Override
-	public void bye(Utilisateur utilisateur) {
-		// TODO Auto-generated method stub
-
+	public void bye(Utilisateur utilisateur)  throws RemoteException
+	{
+		listeUtilisateurs.remove(utilisateur);
 	}
 
 	@Override
-	public List<Utilisateur> who() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Utilisateur> who()  throws RemoteException
+	{
+		return listeUtilisateurs;
 	}
 
 	@Override
-	public List<Message> getMessages() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Message> getMessages(Date date)  throws RemoteException
+	{
+		ArrayList<Message> listeTemp = new ArrayList<Message>();
+		for(Message m: listeMessages)
+		{
+			if(m.getDateEmission().after(date)) listeTemp.add(m);
+		}
+		return listeTemp;
 	}
 
 }
