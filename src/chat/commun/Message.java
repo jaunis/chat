@@ -11,4 +11,9 @@ public class Message {
         this.contenu = contenuIn;
         this.expéditeur = expéditeurIn;
     }
+
+    @Override
+    public String toString() {
+        return this.contenu;
+    }
 }

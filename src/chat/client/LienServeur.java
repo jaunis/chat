@@ -15,22 +15,51 @@ public class LienServeur {
     }
 
     public void bye() {
-        this.serveur.bye(this.client.getUtilisateur());
+        if (this.client.isConnected()) {
+            this.serveur.bye(this.client.getUtilisateur());
+            this.client.disconnect();
+            this.client
+                    .getVisualisateur()
+                    .getTextViewer()
+                    .append("Utilisateur "
+                            + this.client.getUtilisateur().toString()
+                            + " has quit.");
+        }
     }
 
     public void connect(String userID) {
-        this.serveur.connect(userID);
+        this.client.setUtilisateur(this.serveur.connect(userID));
+        this.client.getVisualisateur().getTextViewer()
+                .append("Utilisateur " + userID + " has connected.");
     }
 
     public void getMessages() {
-        this.client.addMessages(this.serveur.getMessages());
+        if (this.client.isConnected()) {
+            this.client.setMessages(this.serveur.getMessages());
+        }
     }
 
     public void sendMessage(Message message) {
-        this.serveur.send(message, this.client.getUtilisateur());
+        if (this.client.isConnected()) {
+            this.serveur.send(message, this.client.getUtilisateur());
+
+            this.client
+                    .getVisualisateur()
+                    .getTextViewer()
+                    .append("Utilisateur "
+                            + this.client.getUtilisateur().toString()
+                            + " has send this : " + message.toString());
+
+            this.client.getVisualisateur().repaint();
+        }
     }
 
     public void who() {
-        this.client.setListeUtilisateurs(this.serveur.who());
+        if (this.client.isConnected()) {
+            this.client.setListeUtilisateurs(this.serveur.who());
+
+            this.client.getVisualisateur().getTextViewer()
+                    .append("Asked for users");
+        }
     }
 }

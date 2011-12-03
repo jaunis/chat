@@ -1,11 +1,14 @@
 package chat.serveur;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import chat.commun.Message;
 import chat.commun.Utilisateur;
 
 public class ServeurImpl implements Serveur {
+
+    private List<Message> messageList = new ArrayList<>();
 
     @Override
     public void bye(Utilisateur utilisateur) {
@@ -18,14 +21,13 @@ public class ServeurImpl implements Serveur {
     public Utilisateur connect(String id) {
         // TODO Auto-generated method stub
         System.out.println("Utilisateur " + id + " has connected.");
-        return null;
+        return new Utilisateur(id);
     }
 
     @Override
     public List<Message> getMessages() {
         // TODO Auto-generated method stub
-        System.out.println("Asked for messages");
-        return null;
+        return this.messageList;
     }
 
     @Override
@@ -39,7 +41,7 @@ public class ServeurImpl implements Serveur {
     public List<Utilisateur> who() {
         // TODO Auto-generated method stub
         System.out.println("Asked for users");
-        return null;
+        return new ArrayList<>();
     }
 
 }

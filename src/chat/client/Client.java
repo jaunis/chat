@@ -34,15 +34,6 @@ public class Client {
         this.updater.start();
     }
 
-    /**
-     * Add new messages to the list.
-     * @param messages
-     *            the list of messages
-     */
-    public void addMessages(List<Message> messages) {
-        this.listeMessages.addAll(messages);
-    }
-
     public GestionnaireTexte getGestionnaireTexte() {
         return this.gestionnaireTexte;
     }
@@ -69,5 +60,23 @@ public class Client {
 
     public void setListeUtilisateurs(List<Utilisateur> listeUtilisateur) {
         this.listeUtilisateurs = listeUtilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateurIn) {
+        this.utilisateur = utilisateurIn;
+    }
+
+    public boolean isConnected() {
+        return this.utilisateur != null && this.utilisateur.isConnected();
+    }
+
+    public void disconnect() {
+        if (this.isConnected()) {
+            this.utilisateur.disconnect();
+        }
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.listeMessages = messages;
     }
 }

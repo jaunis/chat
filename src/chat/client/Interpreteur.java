@@ -1,5 +1,6 @@
 package chat.client;
 
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import chat.commun.Commandes;
@@ -13,29 +14,41 @@ public class Interpreteur {
         this.client = clientIn;
     }
 
-    private static String getCommand(String texte) {
-        String premierMot = new StringTokenizer(texte, " ").nextToken();
+    private static String getCommand(String texte) throws EmptyLineException {
+        try {
+            String premierMot = new StringTokenizer(texte, " ").nextToken();
 
-        for (String m : Commandes.getListeMotsCles()) {
-            if (premierMot.equalsIgnoreCase(m)) {
-                return premierMot;
+            for (String m : Commandes.getListeMotsCles()) {
+                if (premierMot.equalsIgnoreCase(m)) {
+                    return premierMot;
+                }
             }
+        } catch (NoSuchElementException e) {
+            // If the line is empty.
+            // FIXME : it's dirty.
+            Interpreteur inter = new Interpreteur(null);
+            throw inter.new EmptyLineException();
         }
 
         return null;
     }
 
     private void traiterCommande(String texte) {
-        String commande = Interpreteur.getCommand(texte);
-        String reste = texte.substring(commande.length());
+        String commande;
+        try {
+            commande = Interpreteur.getCommand(texte);
 
-        if (commande.equalsIgnoreCase(Commandes.connect)) {
-            String userID = new StringTokenizer(texte, " ").nextToken();
-            this.client.getLienServeur().connect(userID);
-        } else if (commande.equalsIgnoreCase(Commandes.bye)) {
-            this.client.getLienServeur().bye();
-        } else if (commande.equalsIgnoreCase(Commandes.who)) {
-            this.client.getLienServeur().who();
+            String[] reste = texte.split(" ");
+
+            if (commande.equalsIgnoreCase(Commandes.connect)) {
+                this.client.getLienServeur().connect(reste[1]);
+            } else if (commande.equalsIgnoreCase(Commandes.bye)) {
+                this.client.getLienServeur().bye();
+            } else if (commande.equalsIgnoreCase(Commandes.who)) {
+                this.client.getLienServeur().who();
+            }
+        } catch (EmptyLineException e) {
+            // If the line is empty, do nothing.
         }
     }
 
@@ -46,15 +59,30 @@ public class Interpreteur {
 
     public void traiterTexte(String texte) {
         // Séparer le début du mot.
-        if (Interpreteur.getCommand(texte) != null) {
+        try {
+            if (Interpreteur.getCommand(texte) != null) {
 
-            // Si c'est un mot-clé, traiter cette commande.
-            this.traiterCommande(texte);
-            Interpreteur.getCommand(texte);
+                // Si c'est un mot-clé, traiter cette commande.
+                this.traiterCommande(texte);
+                Interpreteur.getCommand(texte);
 
-        } else {
-            // Sinon, c'est un message et on le traite.
-            this.traiterMessage(texte);
+            } else {
+                // Sinon, c'est un message et on le traite.
+                this.traiterMessage(texte);
+            }
+        } catch (EmptyLineException e) {
+            // If the line is empty, do nothing.
+        }
+    }
+
+    private class EmptyLineException extends Exception {
+
+        /**
+         * Serial version UID.
+         */
+        private static final long serialVersionUID = 1L;
+
+        public EmptyLineException() {
         }
     }
 }

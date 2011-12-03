@@ -29,6 +29,6 @@ public class Commandes {
     }
 
     private static boolean isInit() {
-        return Commandes.listeMotsCles == null;
+        return Commandes.listeMotsCles != null;
     }
 }
