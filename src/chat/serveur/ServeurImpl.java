@@ -68,7 +68,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
     @Override
     public ArrayList<Message> getMessages(Date date) throws RemoteException {
-        ArrayList<Message> listeTemp = new ArrayList<Message>();
+        ArrayList<Message> listeTemp = new ArrayList<>();
         for (Message m : this.listeMessages) {
             if (m.getDateEmission().after(date))
                 listeTemp.add(m);

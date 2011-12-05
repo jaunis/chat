@@ -22,7 +22,7 @@ public class Commandes {
     }
 
     private static void init() {
-        Commandes.listeMotsCles = new ArrayList<String>();
+        Commandes.listeMotsCles = new ArrayList<>();
         Commandes.listeMotsCles.add(connect);
         Commandes.listeMotsCles.add(bye);
         Commandes.listeMotsCles.add(who);

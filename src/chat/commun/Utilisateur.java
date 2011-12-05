@@ -42,4 +42,9 @@ public class Utilisateur implements Serializable {
     public void disconnect() {
         this.connected = false;
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

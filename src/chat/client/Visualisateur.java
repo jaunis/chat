@@ -31,11 +31,11 @@ public class Visualisateur extends JFrame {
         this.setPreferredSize(new Dimension(500, 500));
 
         this.client = clientIn;
-        
+
         this.panel = new JPanel();
         this.panel.setLayout(new FlowLayout());
         this.add(this.panel);
-        
+
         this.textViewer = new JTextArea();
         this.textViewer.setPreferredSize(new Dimension(150, 50));
         this.panel.add(this.textViewer);

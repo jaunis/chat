@@ -2,7 +2,6 @@ package chat.client;
 
 import java.rmi.RemoteException;
 
-import chat.commun.Message;
 import chat.serveur.Serveur;
 
 public class LienServeur {
@@ -43,7 +42,7 @@ public class LienServeur {
         }
         this.client.getVisualisateur().getTextViewer()
                 .append("Utilisateur " + userID + " has connected.");
-        //this.client.getVisualisateur().repaint();
+        // this.client.getVisualisateur().repaint();
     }
 
     public void getMessages() {
