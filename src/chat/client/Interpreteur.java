@@ -47,7 +47,7 @@ public class Interpreteur {
                 this.client.getLienServeur().who();
             }
         } catch (EmptyLineException e) {
-            // If the line is empty, do nothing.
+            // Si la ligne est vide, ne rien faire :) (Je d�teste l'anglais)
         }
     }
 

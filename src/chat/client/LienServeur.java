@@ -43,6 +43,7 @@ public class LienServeur {
         }
         this.client.getVisualisateur().getTextViewer()
                 .append("Utilisateur " + userID + " has connected.");
+        //this.client.getVisualisateur().repaint();
     }
 
     public void getMessages() {
@@ -71,7 +72,7 @@ public class LienServeur {
                     .getTextViewer()
                     .append("Utilisateur "
                             + this.client.getUtilisateur().toString()
-                            + " has send this : " + message.toString());
+                            + " has send this : " + message);
 
             this.client.getVisualisateur().repaint();
         }

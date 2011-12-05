@@ -13,13 +13,14 @@ import chat.commun.Utilisateur;
 
 public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
+
     private static final long serialVersionUID = 1L;
     protected ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<>();
     protected ArrayList<Message> listeMessages = new ArrayList<>();
 
     public static int port = 70;
 
-    protected ServeurImpl() throws RemoteException {
+    public ServeurImpl() throws RemoteException {
         super();
     }
 
@@ -67,7 +68,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
     @Override
     public ArrayList<Message> getMessages(Date date) throws RemoteException {
-        ArrayList<Message> listeTemp = new ArrayList<>();
+        ArrayList<Message> listeTemp = new ArrayList<Message>();
         for (Message m : this.listeMessages) {
             if (m.getDateEmission().after(date))
                 listeTemp.add(m);

@@ -9,9 +9,9 @@ import chat.serveur.Serveur;
 
 public class Client {
 
-    private List<Message> listeMessages = new ArrayList<>();
+    private List<Message> listeMessages = new ArrayList<Message>();
 
-    private List<Utilisateur> listeUtilisateurs = new ArrayList<>();
+    private List<Utilisateur> listeUtilisateurs = new ArrayList<Utilisateur>();
 
     private Utilisateur utilisateur;
 
