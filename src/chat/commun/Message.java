@@ -7,7 +7,7 @@ public class Message implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String contenu;
-    protected Date dateEmission;
+    private Date dateEmission;
     private Utilisateur expediteur;
 
     public Message(String contenuIn, Utilisateur expediteurIn) {

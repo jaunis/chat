@@ -4,7 +4,6 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import chat.commun.Commandes;
-import chat.commun.Message;
 
 public class Interpreteur {
 
@@ -14,20 +13,14 @@ public class Interpreteur {
         this.client = clientIn;
     }
 
-    private static String getCommand(String texte) throws EmptyLineException {
-        try {
-            String premierMot = new StringTokenizer(texte, " ").nextToken();
+    private static String getCommand(String texte)
+            throws NoSuchElementException {
+        String premierMot = new StringTokenizer(texte, " ").nextToken();
 
-            for (String m : Commandes.getListeMotsCles()) {
-                if (premierMot.equalsIgnoreCase(m)) {
-                    return premierMot;
-                }
+        for (String m : Commandes.getListeMotsCles()) {
+            if (premierMot.equalsIgnoreCase(m)) {
+                return premierMot;
             }
-        } catch (NoSuchElementException e) {
-            // If the line is empty.
-            // FIXME : it's dirty.
-            Interpreteur inter = new Interpreteur(null);
-            throw inter.new EmptyLineException();
         }
 
         return null;
@@ -47,15 +40,13 @@ public class Interpreteur {
             } else if (commande.equalsIgnoreCase(Commandes.who)) {
                 this.client.getLienServeur().who();
             }
-        } catch (EmptyLineException e) {
-            // Si la ligne est vide, ne rien faire :) (Je déteste l'anglais)
+        } catch (NoSuchElementException e) {
+            // Si la ligne est vide, ne rien faire.
         }
     }
 
     private void traiterMessage(String texte) {
-        //FIXME : changer ceci ! (Foutus anglais)
-        // Message message = new Message(texte, this.client);
-        // this.client.getLienServeur().sendMessage(message);
+        this.client.getLienServeur().sendMessage(texte);
     }
 
     public void traiterTexte(String texte) {
@@ -71,19 +62,8 @@ public class Interpreteur {
                 // Sinon, c'est un message et on le traite.
                 this.traiterMessage(texte);
             }
-        } catch (EmptyLineException e) {
-            // If the line is empty, do nothing.
-        }
-    }
-
-    private class EmptyLineException extends Exception {
-
-        /**
-         * Serial version UID.
-         */
-        private static final long serialVersionUID = 1L;
-
-        public EmptyLineException() {
+        } catch (NoSuchElementException e) {
+            // Si la ligne est vide, ne rien faire.
         }
     }
 }

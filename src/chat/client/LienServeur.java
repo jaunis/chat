@@ -1,8 +1,8 @@
 package chat.client;
 
 import java.rmi.RemoteException;
+import java.util.Date;
 
-import chat.commun.Message;
 import chat.serveur.Serveur;
 
 public class LienServeur {
@@ -21,16 +21,8 @@ public class LienServeur {
             try {
                 this.serveur.bye(this.client.getUtilisateur());
             } catch (RemoteException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            this.client.disconnect();
-            this.client
-                    .getVisualisateur()
-                    .getTextViewer()
-                    .append("Utilisateur "
-                            + this.client.getUtilisateur().toString()
-                            + " has quit.");
         }
     }
 
@@ -38,21 +30,19 @@ public class LienServeur {
         try {
             this.client.setUtilisateur(this.serveur.connect(userID));
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        this.client.getVisualisateur().getTextViewer()
-                .append("Utilisateur " + userID + " has connected.");
-        //this.client.getVisualisateur().repaint();
     }
 
     public void getMessages() {
         if (this.client.isConnected()) {
-            // FIXME : look at this.
             try {
-                this.client.setMessages(this.serveur.getMessages(null));
+                Date lastMessageDate = this.client.getMessages()
+                        .get(this.client.getMessages().size() - 1)
+                        .getDateEmission();
+                this.client.setMessages(this.serveur
+                        .getMessages(lastMessageDate));
             } catch (RemoteException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -60,31 +50,21 @@ public class LienServeur {
 
     public void sendMessage(String message) {
         if (this.client.isConnected()) {
-            // FIXME : change this.
-            // this.serveur.send(message, this.client.getUtilisateur());
-
-            this.client
-                    .getVisualisateur()
-                    .getTextViewer()
-                    .append("Utilisateur "
-                            + this.client.getUtilisateur().toString()
-                            + " has send this : " + message);
-
-            this.client.getVisualisateur().repaint();
+            try {
+                this.serveur.send(message, this.client.getUtilisateur());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void who() {
         if (this.client.isConnected()) {
             try {
-                this.client.setListeUtilisateurs(this.serveur.who());
+                System.out.println(this.serveur.who());
             } catch (RemoteException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
-            this.client.getVisualisateur().getTextViewer()
-                    .append("Asked for users");
         }
     }
 }

@@ -13,9 +13,10 @@ import chat.commun.Utilisateur;
 
 public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
-    private static final long serialVersionUID = 1521779512098629525L;
-    protected ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<Utilisateur>();
-    protected ArrayList<Message> listeMessages = new ArrayList<Message>();
+
+    private static final long serialVersionUID = 1L;
+    protected ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<>();
+    protected ArrayList<Message> listeMessages = new ArrayList<>();
 
     public static int port = 70;
 
@@ -26,9 +27,9 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     public static void main(String args[]) {
         String URL;
         try {
-            // Cr�ation du serveur de nom - rmiregistry
+            // Création du serveur de nom - rmiregistry
             LocateRegistry.createRegistry(port);
-            // Cr�ation d'une instance de l'objet serveur
+            // Création d'une instance de l'objet serveur
             Serveur obj = new ServeurImpl();
             // Calcul de l'URL du serveur
             URL = "//" + InetAddress.getLocalHost().getHostName() + ":" + port
@@ -47,7 +48,6 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
         this.listeUtilisateurs.add(nouveau);
         this.listeMessages.add(new Message("L'utilisateur " + nouveau + " s'est connecté", nouveau));
         return nouveau;
-
     }
 
     @Override
@@ -68,7 +68,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
     @Override
     public ArrayList<Message> getMessages(Date date) throws RemoteException {
-        ArrayList<Message> listeTemp = new ArrayList<Message>();
+        ArrayList<Message> listeTemp = new ArrayList<>();
         for (Message m : this.listeMessages) {
             if (m.getDateEmission().after(date))
                 listeTemp.add(m);
