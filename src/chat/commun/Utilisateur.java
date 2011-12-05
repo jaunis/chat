@@ -5,7 +5,8 @@ import java.io.Serializable;
 public class Utilisateur implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    protected String id;
+    private String id;
+    private boolean connected;
 
     public Utilisateur(String idIn) {
         this.id = idIn;
@@ -34,9 +35,11 @@ public class Utilisateur implements Serializable {
         return false;
     }
 
-    @Override
-    public int hashCode() {
-        // TODO Auto-generated method stub
-        return super.hashCode();
+    public boolean isConnected() {
+        return this.connected;
+    }
+
+    public void disconnect() {
+        this.connected = false;
     }
 }

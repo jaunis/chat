@@ -67,16 +67,13 @@ public class Client {
     }
 
     public boolean isConnected() {
-        // FIXME
-        // return this.utilisateur != null && this.utilisateur.isConnected();
-        return true;
+        return this.utilisateur != null && this.utilisateur.isConnected();
     }
 
     public void disconnect() {
-        // FIXME
-        // if (this.isConnected()) {
-        // this.utilisateur.disconnect();
-        // }
+        if (this.isConnected()) {
+            this.utilisateur.disconnect();
+        }
     }
 
     public void setMessages(List<Message> messages) {

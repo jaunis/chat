@@ -1,4 +1,4 @@
 /**
- * TODO .
+ * The main package.
  */
 package chat;

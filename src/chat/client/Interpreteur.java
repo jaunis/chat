@@ -4,7 +4,6 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import chat.commun.Commandes;
-import chat.commun.Message;
 
 public class Interpreteur {
 
@@ -53,9 +52,7 @@ public class Interpreteur {
     }
 
     private void traiterMessage(String texte) {
-        //FIXME : change this !
-        // Message message = new Message(texte, this.client);
-        // this.client.getLienServeur().sendMessage(message);
+        this.client.getLienServeur().sendMessage(texte);
     }
 
     public void traiterTexte(String texte) {

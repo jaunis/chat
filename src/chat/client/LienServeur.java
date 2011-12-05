@@ -57,10 +57,14 @@ public class LienServeur {
         }
     }
 
-    public void sendMessage(Message message) {
+    public void sendMessage(String message) {
         if (this.client.isConnected()) {
-            // FIXME : change this.
-            // this.serveur.send(message, this.client.getUtilisateur());
+            try {
+                this.serveur.send(message, this.client.getUtilisateur());
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
             this.client
                     .getVisualisateur()

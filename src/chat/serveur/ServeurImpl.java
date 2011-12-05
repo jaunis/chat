@@ -13,7 +13,7 @@ import chat.commun.Utilisateur;
 
 public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
-    private static final long serialVersionUID = 1521779512098629525L;
+    private static final long serialVersionUID = 1L;
     protected ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<>();
     protected ArrayList<Message> listeMessages = new ArrayList<>();
 
@@ -26,9 +26,9 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     public static void main(String args[]) {
         String URL;
         try {
-            // Cr�ation du serveur de nom - rmiregistry
+            // Création du serveur de nom - rmiregistry
             LocateRegistry.createRegistry(port);
-            // Cr�ation d'une instance de l'objet serveur
+            // Création d'une instance de l'objet serveur
             Serveur obj = new ServeurImpl();
             // Calcul de l'URL du serveur
             URL = "//" + InetAddress.getLocalHost().getHostName() + ":" + port
