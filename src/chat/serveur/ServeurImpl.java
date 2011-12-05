@@ -45,6 +45,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
         if (this.listeUtilisateurs.contains(nouveau))
             throw new RemoteException("Cet id est déjà utilisé");
         this.listeUtilisateurs.add(nouveau);
+        this.listeMessages.add(new Message("L'utilisateur " + nouveau + " s'est connecté", nouveau));
         return nouveau;
 
     }
