@@ -47,7 +47,6 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
             throw new RemoteException("Cet id est déjà utilisé");
         this.listeUtilisateurs.add(nouveau);
         return nouveau;
-
     }
 
     @Override

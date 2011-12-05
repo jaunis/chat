@@ -11,20 +11,18 @@ public class Client {
 
     private List<Message> listeMessages = new ArrayList<>();
 
-    private List<Utilisateur> listeUtilisateurs = new ArrayList<>();
-
     private Utilisateur utilisateur;
 
     private Interpreteur interpreteur;
 
-    private Visualisateur visualisateur;
+    // private Visualisateur visualisateur;
     private Updater updater;
     private GestionnaireTexte gestionnaireTexte;
     private LienServeur lienServeur;
 
     public Client(Serveur serveur) {
         this.lienServeur = new LienServeur(this, serveur);
-        this.visualisateur = new Visualisateur(this);
+        // this.visualisateur = new Visualisateur(this);
         this.interpreteur = new Interpreteur(this);
         this.gestionnaireTexte = new GestionnaireTexte(this);
 
@@ -54,14 +52,6 @@ public class Client {
         return this.utilisateur;
     }
 
-    public Visualisateur getVisualisateur() {
-        return this.visualisateur;
-    }
-
-    public void setListeUtilisateurs(List<Utilisateur> listeUtilisateur) {
-        this.listeUtilisateurs = listeUtilisateur;
-    }
-
     public void setUtilisateur(Utilisateur utilisateurIn) {
         this.utilisateur = utilisateurIn;
     }
@@ -78,5 +68,9 @@ public class Client {
 
     public void setMessages(List<Message> messages) {
         this.listeMessages = messages;
+    }
+
+    public List<Message> getMessages() {
+        return this.listeMessages;
     }
 }
