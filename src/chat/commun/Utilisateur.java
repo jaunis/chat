@@ -47,4 +47,10 @@ public class Utilisateur implements Serializable {
     public int hashCode() {
         return super.hashCode();
     }
+    
+    @Override
+    public String toString()
+    {
+    	return this.id;
+    }
 }

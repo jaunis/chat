@@ -15,8 +15,8 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
 
     private static final long serialVersionUID = 1L;
-    protected ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<>();
-    protected ArrayList<Message> listeMessages = new ArrayList<>();
+    protected ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<Utilisateur>();
+    protected ArrayList<Message> listeMessages = new ArrayList<Message>();
 
     public static int port = 70;
 
@@ -68,7 +68,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
     @Override
     public ArrayList<Message> getMessages(Date date) throws RemoteException {
-        ArrayList<Message> listeTemp = new ArrayList<>();
+        ArrayList<Message> listeTemp = new ArrayList<Message>();
         for (Message m : this.listeMessages) {
             if (m.getDateEmission().after(date))
                 listeTemp.add(m);
