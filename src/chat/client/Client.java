@@ -57,12 +57,12 @@ public class Client {
     }
 
     public boolean isConnected() {
-        return this.utilisateur != null && this.utilisateur.isConnected();
+        return this.utilisateur != null;
     }
 
     public void disconnect() {
         if (this.isConnected()) {
-            this.utilisateur.disconnect();
+            this.utilisateur = null;
         }
     }
 

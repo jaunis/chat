@@ -29,13 +29,14 @@ public class LienServeur {
     public void connect(String userID) {
         try {
             this.client.setUtilisateur(this.serveur.connect(userID));
+            System.out.println(userID + " s'est connecté.");
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
     public void getMessages() {
-        if (this.client.isConnected()) {
+        if (this.client.isConnected() && !this.client.getMessages().isEmpty()) {
             try {
                 Date lastMessageDate = this.client.getMessages()
                         .get(this.client.getMessages().size() - 1)

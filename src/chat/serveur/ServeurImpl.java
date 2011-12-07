@@ -15,8 +15,8 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
 
     private static final long serialVersionUID = 1L;
-    protected ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<Utilisateur>();
-    protected ArrayList<Message> listeMessages = new ArrayList<Message>();
+    protected ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<>();
+    protected ArrayList<Message> listeMessages = new ArrayList<>();
 
     public static int port = 70;
 
@@ -47,6 +47,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
             throw new RemoteException("Cet id est déjà utilisé");
         this.listeUtilisateurs.add(nouveau);
         this.listeMessages.add(new Message("L'utilisateur " + nouveau + " s'est connecté", nouveau));
+        System.out.println(nouveau + " s'est conencté");
         return nouveau;
     }
 
@@ -54,6 +55,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     public void send(String message, Utilisateur expediteur)
             throws RemoteException {
         this.listeMessages.add(new Message(message, expediteur));
+        System.out.println(expediteur + " a dit: " + message);
     }
 
     @Override
