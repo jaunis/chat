@@ -55,8 +55,15 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     @Override
     public void send(String message, Utilisateur expediteur)
             throws RemoteException {
-        this.listeMessages.add(new Message(message, expediteur));
-        System.out.println(expediteur + ": " + message);
+    	if(listeUtilisateurs.contains(expediteur))
+    	{
+    		this.listeMessages.add(new Message(message, expediteur));
+            System.out.println(expediteur + ": " + message);
+    	}
+    	else
+    	{
+    		throw new RemoteException("Vous n'êtes pas connecté.");
+    	}
     }
 
     @Override
@@ -80,7 +87,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
             if (m.getDateEmission().after(date))
                 listeTemp.add(m);
         }
-        System.out.println("getMessages(" + date + "): " + listeTemp);
+        //pas de log, sinon on spamme la console
         return listeTemp;
     }
 }
