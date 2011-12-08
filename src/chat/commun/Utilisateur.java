@@ -6,12 +6,27 @@ public class Utilisateur implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String id;
+    private String reference;
 
     public Utilisateur(String idIn) {
         this.id = idIn;
     }
 
     /**
+	 * @return the reference
+	 */
+	public String getReference() {
+		return reference;
+	}
+
+	/**
+	 * @param reference the reference to set
+	 */
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	/**
      * @return the id
      */
     public String getId() {

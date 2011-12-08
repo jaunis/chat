@@ -4,6 +4,8 @@ import java.net.InetAddress;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.server.RemoteServer;
+import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +47,20 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
         Utilisateur nouveau = new Utilisateur(id);
         if (this.listeUtilisateurs.contains(nouveau))
             throw new RemoteException("Cet id est déjà utilisé");
+        try
+        {
+        	String reference = RemoteServer.getClientHost();
+            for(Utilisateur u: listeUtilisateurs)
+            {
+            	if(u.getReference().equals(reference))
+            		throw new RemoteException("Vous êtes déjà connecté avec l'id " + u);
+            }
+            nouveau.setReference(reference);
+        }
+        catch(ServerNotActiveException e)
+        {
+        	throw new RemoteException("Erreur interne");
+        }
         this.listeUtilisateurs.add(nouveau);
         Message retour = new Message("L'utilisateur " + nouveau + " s'est connecté", nouveau);
         this.listeMessages.add(retour);

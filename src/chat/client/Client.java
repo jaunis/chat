@@ -1,7 +1,6 @@
 package chat.client;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import chat.commun.Message;
 import chat.commun.Utilisateur;
