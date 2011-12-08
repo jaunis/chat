@@ -1,22 +1,13 @@
 package chat.client;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.util.List;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
-import chat.commun.Message;
 
 public class Visualisateur extends JFrame {
 
-    // /**
-    // * Version ID.
-    // */
-    // private static final long serialVersionUID = 1L;
+    /**
+     * Version ID.
+     */
+    private static final long serialVersionUID = 1L;
     //
     // private Client client;
     //

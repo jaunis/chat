@@ -15,7 +15,6 @@ import chat.commun.Utilisateur;
 
 public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
-
     private static final long serialVersionUID = 1L;
     protected ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<>();
     protected ArrayList<Message> listeMessages = new ArrayList<>();
@@ -47,22 +46,21 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
         Utilisateur nouveau = new Utilisateur(id);
         if (this.listeUtilisateurs.contains(nouveau))
             throw new RemoteException("Cet id est déjà utilisé");
-        try
-        {
-        	String reference = RemoteServer.getClientHost();
-            for(Utilisateur u: listeUtilisateurs)
-            {
-            	if(u.getReference().equals(reference))
-            		throw new RemoteException("Vous êtes déjà connecté avec l'id " + u);
+        try {
+            String reference = RemoteServer.getClientHost();
+            for (Utilisateur u : this.listeUtilisateurs) {
+                if (u.getReference().equals(reference))
+                    throw new RemoteException(
+                            "Vous êtes déjà connecté avec l'id " + u);
             }
             nouveau.setReference(reference);
-        }
-        catch(ServerNotActiveException e)
-        {
-        	throw new RemoteException("Erreur interne");
+        } catch (ServerNotActiveException e) {
+            throw new RemoteException("Erreur interne");
         }
         this.listeUtilisateurs.add(nouveau);
-        Message retour = new Message("L'utilisateur " + nouveau + " s'est connecté", nouveau);
+
+        Message retour = new Message("L'utilisateur " + nouveau
+                + " s'est connecté", nouveau);
         this.listeMessages.add(retour);
         System.out.println(retour);
         return retour;
@@ -71,39 +69,37 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     @Override
     public void send(String message, Utilisateur expediteur)
             throws RemoteException {
-    	if(listeUtilisateurs.contains(expediteur))
-    	{
-    		this.listeMessages.add(new Message(message, expediteur));
+        if (this.listeUtilisateurs.contains(expediteur)) {
+            this.listeMessages.add(new Message(message, expediteur));
             System.out.println(expediteur + ": " + message);
-    	}
-    	else
-    	{
-    		throw new RemoteException("Vous n'êtes pas connecté.");
-    	}
+        } else {
+            throw new RemoteException("Vous n'êtes pas connecté.");
+        }
     }
 
     @Override
     public void bye(Utilisateur utilisateur) throws RemoteException {
         this.listeUtilisateurs.remove(utilisateur);
-        Message alerte = new Message(utilisateur + " s'est déconnecté.", utilisateur);
-        listeMessages.add(alerte);
+        Message alerte = new Message(utilisateur + " s'est déconnecté.",
+                utilisateur);
+        this.listeMessages.add(alerte);
         System.out.println(alerte);
     }
 
     @Override
     public ArrayList<Utilisateur> who() throws RemoteException {
-    	System.out.println("Requête who");
-    	return this.listeUtilisateurs;
+        System.out.println("Requête who");
+        return this.listeUtilisateurs;
     }
 
     @Override
     public ArrayList<Message> getMessages(Date date) throws RemoteException {
-        ArrayList<Message> listeTemp = new ArrayList<Message>();
+        ArrayList<Message> listeTemp = new ArrayList<>();
         for (Message m : this.listeMessages) {
             if (m.getDateEmission().after(date))
                 listeTemp.add(m);
         }
-        //pas de log, sinon on spamme la console
+        // pas de log, sinon on spamme la console
         return listeTemp;
     }
 }

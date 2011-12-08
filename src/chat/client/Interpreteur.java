@@ -53,10 +53,8 @@ public class Interpreteur {
         // Séparer le début du mot.
         try {
             if (Interpreteur.getCommand(texte) != null) {
-
                 // Si c'est un mot-clé, traiter cette commande.
                 this.traiterCommande(texte);
-                Interpreteur.getCommand(texte);
 
             } else {
                 // Sinon, c'est un message et on le traite.

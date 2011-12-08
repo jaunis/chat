@@ -18,7 +18,7 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return expediteur + ": " + this.contenu;
+        return this.expediteur + ": " + this.contenu;
     }
 
     /**
