@@ -1,15 +1,17 @@
 package chat.client;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Date;
 
+import chat.commun.Message;
 import chat.serveur.Serveur;
 
 public class LienServeur {
 
     private Serveur serveur;
-
     private Client client;
+    private Date derniereMaj;
 
     public LienServeur(Client clientIn, Serveur serveurIn) {
         this.client = clientIn;
@@ -28,21 +30,25 @@ public class LienServeur {
 
     public void connect(String userID) {
         try {
-            this.client.setUtilisateur(this.serveur.connect(userID));
-            System.out.println(userID + " s'est connecté.");
+            Message retour = this.serveur.connect(userID);
+        	this.client.setUtilisateur(retour.getExpediteur());
+        	derniereMaj = retour.getDateEmission();
+        	ArrayList<Message> liste = new ArrayList<>();
+            liste.add(retour);
+            this.client.setMessages(liste);
+            System.out.println(retour);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
     public void getMessages() {
-        if (this.client.isConnected() && !this.client.getMessages().isEmpty()) {
+        if (this.client.isConnected() && derniereMaj != null) {
             try {
-                Date lastMessageDate = this.client.getMessages()
-                        .get(this.client.getMessages().size() - 1)
-                        .getDateEmission();
-                this.client.setMessages(this.serveur
-                        .getMessages(lastMessageDate));
+                ArrayList<Message> retour = this.serveur.getMessages(derniereMaj);
+                this.client.setMessages(retour);
+                if(!retour.isEmpty())
+                	derniereMaj = retour.get(retour.size()-1).getDateEmission();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

@@ -9,7 +9,7 @@ import chat.commun.Utilisateur;
 
 public interface Serveur extends java.rmi.Remote {
 
-    public Utilisateur connect(String id) throws RemoteException;
+    public Message connect(String id) throws RemoteException;
 
     public void send(String message, Utilisateur expediteur)
             throws RemoteException;

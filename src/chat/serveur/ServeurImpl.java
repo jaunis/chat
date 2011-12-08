@@ -41,31 +41,36 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     }
 
     @Override
-    public Utilisateur connect(String id) throws RemoteException {
+    public Message connect(String id) throws RemoteException {
         Utilisateur nouveau = new Utilisateur(id);
         if (this.listeUtilisateurs.contains(nouveau))
             throw new RemoteException("Cet id est déjà utilisé");
         this.listeUtilisateurs.add(nouveau);
-        this.listeMessages.add(new Message("L'utilisateur " + nouveau + " s'est connecté", nouveau));
-        System.out.println(nouveau + " s'est conencté");
-        return nouveau;
+        Message retour = new Message("L'utilisateur " + nouveau + " s'est connecté", nouveau);
+        this.listeMessages.add(retour);
+        System.out.println(retour);
+        return retour;
     }
 
     @Override
     public void send(String message, Utilisateur expediteur)
             throws RemoteException {
         this.listeMessages.add(new Message(message, expediteur));
-        System.out.println(expediteur + " a dit: " + message);
+        System.out.println(expediteur + ": " + message);
     }
 
     @Override
     public void bye(Utilisateur utilisateur) throws RemoteException {
         this.listeUtilisateurs.remove(utilisateur);
+        Message alerte = new Message(utilisateur + " s'est déconnecté.", utilisateur);
+        listeMessages.add(alerte);
+        System.out.println(alerte);
     }
 
     @Override
     public ArrayList<Utilisateur> who() throws RemoteException {
-        return this.listeUtilisateurs;
+    	System.out.println("Requête who");
+    	return this.listeUtilisateurs;
     }
 
     @Override
@@ -75,6 +80,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
             if (m.getDateEmission().after(date))
                 listeTemp.add(m);
         }
+        System.out.println("getMessages(" + date + "): " + listeTemp);
         return listeTemp;
     }
 }

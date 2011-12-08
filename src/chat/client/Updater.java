@@ -1,5 +1,7 @@
 package chat.client;
 
+import chat.commun.Message;
+
 public class Updater extends Thread {
 
     /**
@@ -23,6 +25,10 @@ public class Updater extends Thread {
     public void run() {
         while (true) {
             this.client.getLienServeur().getMessages();
+            for(Message m: client.getMessages())
+            {
+            	System.out.println(m);
+            }
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {

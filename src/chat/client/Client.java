@@ -9,7 +9,7 @@ import chat.serveur.Serveur;
 
 public class Client {
 
-    private List<Message> listeMessages = new ArrayList<>();
+    private ArrayList<Message> listeMessages = new ArrayList<>();
 
     private Utilisateur utilisateur;
 
@@ -66,11 +66,11 @@ public class Client {
         }
     }
 
-    public void setMessages(List<Message> messages) {
+    public void setMessages(ArrayList<Message> messages) {
         this.listeMessages = messages;
     }
 
-    public List<Message> getMessages() {
+    public ArrayList<Message> getMessages() {
         return this.listeMessages;
     }
 }
