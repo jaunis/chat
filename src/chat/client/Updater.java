@@ -10,23 +10,27 @@ public class Updater extends Thread {
     /**
      * Client actuel.
      */
-    Client client;
+    private Client client;
+
+    private boolean continuer = true;
 
     /**
      * Constructeur.
      * @param clientIn
      *            le client
-     * @param serveurIn
-     *            le serveur
      */
     public Updater(Client clientIn) {
         super();
         this.client = clientIn;
     }
 
+    public void stopThread() {
+        this.continuer = false;
+    }
+
     @Override
     public void run() {
-        while (true) {
+        while (this.continuer) {
             this.client.getLienServeur().getMessages();
             try {
                 Thread.sleep(100);

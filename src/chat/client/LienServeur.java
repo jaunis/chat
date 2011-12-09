@@ -73,13 +73,13 @@ public class LienServeur {
         } catch (NoSuchElementException e) {
             // Si la ligne est vide, ne rien faire.
         } catch (NotConnectedException e) {
-            Visualisateur.displayError(e.getMessage());
+            this.client.getInterfaceGraphique().display(e.getMessage());
         } catch (IdAlreadyUsedException e) {
-            Visualisateur.displayError(e.getMessage());
+            this.client.getInterfaceGraphique().display(e.getMessage());
         } catch (AlreadyConnectedException e) {
-            Visualisateur.displayError(e.getMessage());
+            this.client.getInterfaceGraphique().display(e.getMessage());
         } catch (RemoteException e) {
-            Visualisateur.displayError(e.getMessage());
+            this.client.getInterfaceGraphique().display(e.getMessage());
         }
     }
 
@@ -91,13 +91,14 @@ public class LienServeur {
     public void bye() throws RemoteException, NotConnectedException {
 
         this.serveur.bye(this.client.getUtilisateur());
-        Visualisateur.display(this.client.getUtilisateur()
-                + " s'est déconnecté.");
+        this.client.stopUpdater();
+        this.client.getInterfaceGraphique().display(
+                this.client.getUtilisateur() + " s'est déconnecté.");
     }
 
     /**
      * Demande au serveur de se connecter sous le pseudo userID.
-     * @param userID
+     * @param pseudo
      *            le pseudo demandé
      * @throws RemoteException
      *             si une erreur apparait dans le serveur
@@ -106,6 +107,7 @@ public class LienServeur {
             AlreadyConnectedException, IdAlreadyUsedException {
 
         Message retour = this.serveur.connect(pseudo);
+        this.client.startUpdater();
         this.client.setUtilisateur(retour.getExpediteur());
         this.dateDernierMessage = retour.getDateEmission();
         List<Message> liste = new ArrayList<>();
@@ -121,9 +123,9 @@ public class LienServeur {
         try {
             this.updateMessages();
         } catch (RemoteException e) {
-            Visualisateur.displayError(e.getMessage());
+            this.client.getInterfaceGraphique().display(e.getMessage());
         } catch (NotConnectedException e) {
-            Visualisateur.displayError(e.getMessage());
+            this.client.getInterfaceGraphique().display(e.getMessage());
         }
     }
 
@@ -157,14 +159,6 @@ public class LienServeur {
     }
 
     /**
-     * Getter.
-     * @return la date du dernier message
-     */
-    public Date getDateDernierMessage() {
-        return this.dateDernierMessage;
-    }
-
-    /**
      * Envoye le message au serveur pour être affiché.
      * @param message
      *            le message
@@ -186,7 +180,7 @@ public class LienServeur {
 
         // Demande au visualisateur d'afficher tout cela.
         for (Utilisateur u : listeU) {
-            Visualisateur.display(u.getId());
+            this.client.getInterfaceGraphique().display(u.getId());
         }
     }
 }

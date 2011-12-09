@@ -3,6 +3,7 @@ package chat.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import chat.client.ig.InterfaceGraphique;
 import chat.commun.Message;
 import chat.commun.Utilisateur;
 import chat.serveur.Serveur;
@@ -15,49 +16,23 @@ public class Client {
     private Utilisateur utilisateur;
 
     private Interpreteur interpreteur;
-    private Visualisateur visualisateur;
     private Updater updater;
-    private GestionnaireTexte gestionnaireTexte;
     private LienServeur lienServeur;
+    private InterfaceGraphique interfaceGraphique;
 
     public Client(Serveur serveur) {
         this.lienServeur = new LienServeur(this, serveur);
-        this.visualisateur = new Visualisateur(this);
+        this.interfaceGraphique = new InterfaceGraphique(this);
         this.interpreteur = new Interpreteur(this);
-        this.gestionnaireTexte = new GestionnaireTexte(this);
-        this.updater = new Updater(this);
-
-        this.visualisateur.start();
-        this.gestionnaireTexte.start();
-        this.updater.start();
     }
 
-    public GestionnaireTexte getGestionnaireTexte() {
-        return this.gestionnaireTexte;
+    public void stopUpdater() {
+        this.updater.stopThread();
     }
 
-    public Interpreteur getInterpreteur() {
-        return this.interpreteur;
-    }
-
-    public LienServeur getLienServeur() {
-        return this.lienServeur;
-    }
-
-    public Updater getUpdater() {
-        return this.updater;
-    }
-
-    public Utilisateur getUtilisateur() {
-        return this.utilisateur;
-    }
-
-    public void setUtilisateur(Utilisateur utilisateurIn) {
-        this.utilisateur = utilisateurIn;
-    }
-
-    public boolean isConnected() {
-        return this.utilisateur != null;
+    public void addMessages(List<Message> messages) {
+        this.listeMessagesAAfficher.addAll(messages);
+        this.listeMessages.addAll(messages);
     }
 
     public void disconnect() {
@@ -70,9 +45,16 @@ public class Client {
         return this.listeMessages;
     }
 
-    public void addMessages(List<Message> messages) {
-        this.listeMessagesAAfficher.addAll(messages);
-        this.listeMessages.addAll(messages);
+    public InterfaceGraphique getInterfaceGraphique() {
+        return this.interfaceGraphique;
+    }
+
+    public Interpreteur getInterpreteur() {
+        return this.interpreteur;
+    }
+
+    public LienServeur getLienServeur() {
+        return this.lienServeur;
     }
 
     public List<Message> getMessagesAAfficher() {
@@ -80,5 +62,26 @@ public class Client {
                 this.listeMessagesAAfficher);
         this.listeMessagesAAfficher.clear();
         return messagesAAfficher;
+    }
+
+    public Updater getUpdater() {
+        return this.updater;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return this.utilisateur;
+    }
+
+    public boolean isConnected() {
+        return this.utilisateur != null;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateurIn) {
+        this.utilisateur = utilisateurIn;
+    }
+
+    public void startUpdater() {
+        this.updater = new Updater(this);
+        this.updater.start();
     }
 }
