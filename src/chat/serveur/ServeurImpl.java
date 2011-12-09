@@ -45,7 +45,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     }
 
     @Override
-    public Message connect(String id) throws RemoteException {
+    public Message connect(String id) throws RemoteException, IdAlreadyUsedException, AlreadyConnectedException {
         Utilisateur nouveau = new Utilisateur(id);
         if (this.listeUtilisateurs.contains(nouveau))
             throw new IdAlreadyUsedException(id);
@@ -70,7 +70,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
     @Override
     public void send(String message, Utilisateur expediteur)
-            throws RemoteException {
+            throws RemoteException, NotConnectedException {
         try {
             if (utilisateurValide(expediteur)) {
                 this.listeMessages.add(new Message(message, expediteur));
@@ -84,7 +84,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     }
 
     @Override
-    public void bye(Utilisateur utilisateur) throws RemoteException {
+    public void bye(Utilisateur utilisateur) throws RemoteException, NotConnectedException {
         try {
             if (utilisateurValide(utilisateur)) {
                 this.listeUtilisateurs.remove(utilisateur);
@@ -100,7 +100,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     }
 
     @Override
-    public ArrayList<Utilisateur> who() throws RemoteException {
+    public ArrayList<Utilisateur> who() throws RemoteException, NotConnectedException {
         String reference;
         try {
             reference = RemoteServer.getClientHost();
@@ -121,7 +121,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     }
 
     @Override
-    public ArrayList<Message> getMessages(Date date) throws RemoteException {
+    public ArrayList<Message> getMessages(Date date) throws RemoteException, NotConnectedException {
         try {
             String reference = RemoteServer.getClientHost();
             boolean connecte = false;
@@ -135,7 +135,6 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
                     if (m.getDateEmission().after(date))
                         listeTemp.add(m);
                 }
-                // pas de log, sinon on spamme la console
                 return listeTemp;
             } else
                 throw new NotConnectedException();

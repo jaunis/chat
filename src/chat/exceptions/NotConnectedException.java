@@ -1,8 +1,7 @@
 package chat.exceptions;
 
-import java.rmi.RemoteException;
 
-public class NotConnectedException extends RemoteException {
+public class NotConnectedException extends Exception {
 
     /**
      * Serial version UID.
@@ -13,5 +12,6 @@ public class NotConnectedException extends RemoteException {
      * Constructeur.
      */
     public NotConnectedException() {
+    	super("Vous n'êtes pas connecté.");
     }
 }
