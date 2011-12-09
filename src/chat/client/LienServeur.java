@@ -30,16 +30,14 @@ public class LienServeur {
             commande = Interpreteur.getCommand(texte);
 
             if (commande.equalsIgnoreCase(Commandes.connect)) {
-                String reste = new StringTokenizer(texte, commande + " ")
-                        .nextToken();
+                String reste = texte.substring(texte.indexOf(' ') + 1);
                 this.client.getLienServeur().connect(reste);
             } else if (commande.equalsIgnoreCase(Commandes.bye)) {
                 this.client.getLienServeur().bye();
             } else if (commande.equalsIgnoreCase(Commandes.who)) {
                 this.client.getLienServeur().who();
             } else if (commande.equalsIgnoreCase(Commandes.send)) {
-                String reste = new StringTokenizer(texte, commande + " ")
-                        .nextToken();
+                String reste = texte.substring(texte.indexOf(' ') + 1);
                 this.client.getLienServeur().sendMessage(reste);
             }
         } catch (NoSuchElementException e) {
