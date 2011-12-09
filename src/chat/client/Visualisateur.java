@@ -1,49 +1,63 @@
 package chat.client;
 
-import javax.swing.JFrame;
-
-public class Visualisateur extends JFrame {
+/**
+ * @author Daniel
+ */
+public class Visualisateur extends Thread {
 
     /**
-     * Version ID.
+     * Client actuel.
      */
-    private static final long serialVersionUID = 1L;
+    private Client client;
+
+    /**
+     * Constructeur.
+     * @param clientIn
+     *            le client
+     */
+    public Visualisateur(Client clientIn) {
+        super();
+        this.client = clientIn;
+    }
+
+    // @Override
+    // public void run() {
+    // while (true) {
+    // List<Message> display;
     //
-    // private Client client;
-    //
-    // private JTextArea textViewer;
-    // private JTextField textInput;
-    // private JPanel panel;
-    //
-    // public Visualisateur(Client clientIn) {
-    // super();
-    // this.setTitle("Client");
-    // this.setMinimumSize(new Dimension(500, 500));
-    // this.setPreferredSize(new Dimension(500, 500));
-    //
-    // this.client = clientIn;
-    //
-    // this.panel = new JPanel();
-    // this.panel.setLayout(new FlowLayout());
-    // this.add(this.panel);
-    //
-    // this.textViewer = new JTextArea();
-    // this.textViewer.setPreferredSize(new Dimension(150, 50));
-    // this.panel.add(this.textViewer);
-    //
-    // this.textInput = new JTextField();
-    // this.textInput.setPreferredSize(new Dimension(100, 20));
-    // this.panel.add(this.textInput);
-    //
-    // this.setVisible(true);
+    // if (this.client.getLienServeur().getDateDernierMessage() != null) {
+    // display = this.client.getDerniersMessages();
+    // } else {
+    // display = this.client.getMessages();
     // }
     //
-    // public void display(List<Message> messages) {
-    // for (Message m : messages)
-    // this.textViewer.append(m.toString());
+    // for (Message m : display) {
+    // System.out.println(m.getContenu());
     // }
     //
-    // public JTextArea getTextViewer() {
-    // return this.textViewer;
+    // try {
+    // Thread.sleep(100);
+    // } catch (InterruptedException e) {
+    // e.printStackTrace();
     // }
+    // }
+    // }
+
+    /**
+     * Affiche un texte.
+     * @param texte
+     *            le texte
+     */
+    public static void display(String texte) {
+        System.out.println(texte);
+    }
+
+    /**
+     * Affiche un texte dans la sortie d'erreurs.
+     * @param texte
+     *            le texte
+     */
+    public static void displayError(String texte) {
+        System.err.println(texte);
+    }
 }

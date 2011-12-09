@@ -1,6 +1,7 @@
 package chat.client;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import chat.commun.Message;
 import chat.commun.Utilisateur;
@@ -8,25 +9,26 @@ import chat.serveur.Serveur;
 
 public class Client {
 
-    private ArrayList<Message> listeMessages = new ArrayList<>();
+    private List<Message> listeMessages = new ArrayList<>();
 
     private Utilisateur utilisateur;
 
     private Interpreteur interpreteur;
 
-    // private Visualisateur visualisateur;
+    private Visualisateur visualisateur;
     private Updater updater;
     private GestionnaireTexte gestionnaireTexte;
     private LienServeur lienServeur;
 
     public Client(Serveur serveur) {
         this.lienServeur = new LienServeur(this, serveur);
-        // this.visualisateur = new Visualisateur(this);
+        this.visualisateur = new Visualisateur(this);
         this.interpreteur = new Interpreteur(this);
         this.gestionnaireTexte = new GestionnaireTexte(this);
 
         this.updater = new Updater(this);
 
+        this.visualisateur.start();
         this.gestionnaireTexte.start();
         this.updater.start();
     }
@@ -65,11 +67,11 @@ public class Client {
         }
     }
 
-    public void setMessages(ArrayList<Message> messages) {
-        this.listeMessages = messages;
+    public void setMessages(List<Message> retour) {
+        this.listeMessages = retour;
     }
 
-    public ArrayList<Message> getMessages() {
+    public List<Message> getMessages() {
         return this.listeMessages;
     }
 }
