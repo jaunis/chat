@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
 
 import chat.commun.Commandes;
 import chat.commun.Message;
 import chat.commun.Utilisateur;
+import chat.exceptions.AlreadyConnectedException;
+import chat.exceptions.IdAlreadyUsedException;
 import chat.exceptions.NotConnectedException;
 import chat.serveur.Serveur;
 
@@ -23,6 +24,9 @@ public class LienServeur {
         this.client = clientIn;
         this.serveur = serveurIn;
     }
+
+    // TODO : make only one method action managing all the commands and treating
+    // all the exceptions.
 
     public void traiterCommande(String texte) {
         String commande;
@@ -43,6 +47,10 @@ public class LienServeur {
         } catch (NoSuchElementException e) {
             // Si la ligne est vide, ne rien faire.
         } catch (NotConnectedException e) {
+            Visualisateur.displayError(e.getMessage());
+        } catch (AlreadyConnectedException e) {
+            Visualisateur.displayError(e.getMessage());
+        } catch (IdAlreadyUsedException e) {
             Visualisateur.displayError(e.getMessage());
         } catch (RemoteException e) {
             Visualisateur.displayError(e.getMessage());
@@ -66,6 +74,12 @@ public class LienServeur {
     public void getMessages() {
         try {
             this.updateMessages();
+        } catch (NotConnectedException e) {
+            Visualisateur.displayError(e.getMessage());
+        } catch (AlreadyConnectedException e) {
+            Visualisateur.displayError(e.getMessage());
+        } catch (IdAlreadyUsedException e) {
+            Visualisateur.displayError(e.getMessage());
         } catch (RemoteException e) {
             Visualisateur.displayError(e.getMessage());
         }
