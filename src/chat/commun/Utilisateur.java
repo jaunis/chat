@@ -13,20 +13,21 @@ public class Utilisateur implements Serializable {
     }
 
     /**
-	 * @return the reference
-	 */
-	public String getReference() {
-		return reference;
-	}
+     * @return the reference
+     */
+    public String getReference() {
+        return this.reference;
+    }
 
-	/**
-	 * @param reference the reference to set
-	 */
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
+    /**
+     * @param referenceIn
+     *            the reference to set
+     */
+    public void setReference(String referenceIn) {
+        this.reference = referenceIn;
+    }
 
-	/**
+    /**
      * @return the id
      */
     public String getId() {
@@ -53,10 +54,9 @@ public class Utilisateur implements Serializable {
     public int hashCode() {
         return super.hashCode();
     }
-    
+
     @Override
-    public String toString()
-    {
-    	return this.id;
+    public String toString() {
+        return this.id;
     }
 }

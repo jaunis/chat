@@ -1,5 +1,9 @@
 package chat.client;
 
+import java.util.List;
+
+import chat.commun.Message;
+
 /**
  * @author Daniel
  */
@@ -20,28 +24,28 @@ public class Visualisateur extends Thread {
         this.client = clientIn;
     }
 
-    // @Override
-    // public void run() {
-    // while (true) {
-    // List<Message> display;
-    //
-    // if (this.client.getLienServeur().getDateDernierMessage() != null) {
-    // display = this.client.getDerniersMessages();
-    // } else {
-    // display = this.client.getMessages();
-    // }
-    //
-    // for (Message m : display) {
-    // System.out.println(m.getContenu());
-    // }
-    //
-    // try {
-    // Thread.sleep(100);
-    // } catch (InterruptedException e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // }
+    @Override
+    public void run() {
+        while (true) {
+            List<Message> display;
+
+            if (this.client.getLienServeur().getDateDernierMessage() != null) {
+                display = this.client.getDerniersMessages();
+            } else {
+                display = this.client.getAllMessages();
+            }
+
+            for (Message m : display) {
+                System.out.println(m.getContenu());
+            }
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /**
      * Affiche un texte.
