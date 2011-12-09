@@ -73,13 +73,13 @@ public class LienServeur {
         } catch (NoSuchElementException e) {
             // Si la ligne est vide, ne rien faire.
         } catch (NotConnectedException e) {
-            this.client.getInterfaceGraphique().display(e.getMessage());
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
         } catch (IdAlreadyUsedException e) {
-            this.client.getInterfaceGraphique().display(e.getMessage());
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
         } catch (AlreadyConnectedException e) {
-            this.client.getInterfaceGraphique().display(e.getMessage());
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
         } catch (RemoteException e) {
-            this.client.getInterfaceGraphique().display(e.getMessage());
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
         }
     }
 
@@ -110,9 +110,8 @@ public class LienServeur {
         this.client.startUpdater();
         this.client.setUtilisateur(retour.getExpediteur());
         this.dateDernierMessage = retour.getDateEmission();
-        List<Message> liste = new ArrayList<>();
-        liste.add(retour);
-        this.client.addMessages(liste);
+        this.client.getInterfaceGraphique().display(
+                "L'utilisateur " + retour.getExpediteur() + " s'est connecté.");
     }
 
     /**
@@ -123,9 +122,9 @@ public class LienServeur {
         try {
             this.updateMessages();
         } catch (RemoteException e) {
-            this.client.getInterfaceGraphique().display(e.getMessage());
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
         } catch (NotConnectedException e) {
-            this.client.getInterfaceGraphique().display(e.getMessage());
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
         }
     }
 
@@ -143,18 +142,15 @@ public class LienServeur {
         if (!nouveauxMessages.isEmpty()) {
             // S'il y a au moins un message, mettre à jour la liste des
             // messages.
-            this.client.addMessages(nouveauxMessages);
+            for (Message m : nouveauxMessages) {
+                this.client.getInterfaceGraphique().display(m.toString());
+            }
 
             // Si il y a au moins un message, mettre à jour la date de dernier
             // message.
             this.dateDernierMessage = new Date(nouveauxMessages
                     .get(nouveauxMessages.size() - 1).getDateEmission()
                     .getTime());
-
-            // Petite combine pour éviter de télécharger à l'infini le dernier
-            // message.
-            this.dateDernierMessage
-                    .setTime(this.dateDernierMessage.getTime() + 10);
         }
     }
 
@@ -177,6 +173,9 @@ public class LienServeur {
      */
     public void who() throws RemoteException, NotConnectedException {
         List<Utilisateur> listeU = this.serveur.who();
+
+        this.client.getInterfaceGraphique().display(
+                "Liste des utilisateurs : \n");
 
         // Demande au visualisateur d'afficher tout cela.
         for (Utilisateur u : listeU) {

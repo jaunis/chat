@@ -10,9 +10,6 @@ import chat.serveur.Serveur;
 
 public class Client {
 
-    private List<Message> listeMessages = new ArrayList<>();
-    private List<Message> listeMessagesAAfficher = new ArrayList<>();
-
     private Utilisateur utilisateur;
 
     private Interpreteur interpreteur;
@@ -30,19 +27,10 @@ public class Client {
         this.updater.stopThread();
     }
 
-    public void addMessages(List<Message> messages) {
-        this.listeMessagesAAfficher.addAll(messages);
-        this.listeMessages.addAll(messages);
-    }
-
     public void disconnect() {
         if (this.isConnected()) {
             this.utilisateur = null;
         }
-    }
-
-    public List<Message> getAllMessages() {
-        return this.listeMessages;
     }
 
     public InterfaceGraphique getInterfaceGraphique() {
@@ -55,13 +43,6 @@ public class Client {
 
     public LienServeur getLienServeur() {
         return this.lienServeur;
-    }
-
-    public List<Message> getMessagesAAfficher() {
-        List<Message> messagesAAfficher = new ArrayList<>(
-                this.listeMessagesAAfficher);
-        this.listeMessagesAAfficher.clear();
-        return messagesAAfficher;
     }
 
     public Updater getUpdater() {

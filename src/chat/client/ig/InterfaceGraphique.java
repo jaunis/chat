@@ -39,39 +39,6 @@ public class InterfaceGraphique extends JFrame {
         this.setClient(clientIn);
 
         this.initGUIComponents();
-
-        this.updater = new Thread() {
-
-            private boolean continuer = true;
-
-            public final void stopThread() {
-                this.continuer = false;
-            }
-
-            /**
-             * } Lance une boucle infinie qui appelle le client régulièrement
-             * pour afficher les nouveaux messages (s'il y en a).
-             */
-            @Override
-            public final void run() {
-                while (this.continuer) {
-
-                    List<Message> messageAAfficher = InterfaceGraphique.this
-                            .getClient().getMessagesAAfficher();
-                    if (!messageAAfficher.isEmpty()) {
-                        for (Message m : messageAAfficher) {
-                            InterfaceGraphique.this.display(m.getContenu());
-                        }
-                    }
-
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };
     }
 
     private void initGUIComponents() {
@@ -113,6 +80,11 @@ public class InterfaceGraphique extends JFrame {
      */
     public final void display(final String texte) {
         this.chatText.append(texte + "\n");
+        this.repaint();
+    }
+
+    public final void displayError(final String texte) {
+        this.chatText.append("Error : " + texte + "\n");
         this.repaint();
     }
 
