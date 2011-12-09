@@ -13,5 +13,6 @@ public class NotConnectedException extends RemoteException {
      * Constructeur.
      */
     public NotConnectedException() {
+    	super("Vous n'êtes pas connecté.");
     }
 }

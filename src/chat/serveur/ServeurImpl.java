@@ -12,6 +12,9 @@ import java.util.Date;
 
 import chat.commun.Message;
 import chat.commun.Utilisateur;
+import chat.exceptions.AlreadyConnectedException;
+import chat.exceptions.IdAlreadyUsedException;
+import chat.exceptions.NotConnectedException;
 
 public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
@@ -45,13 +48,12 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     public Message connect(String id) throws RemoteException {
         Utilisateur nouveau = new Utilisateur(id);
         if (this.listeUtilisateurs.contains(nouveau))
-            throw new RemoteException("Cet id est déjà utilisé");
+            throw new IdAlreadyUsedException(id);
         try {
             String reference = RemoteServer.getClientHost();
             for (Utilisateur u : this.listeUtilisateurs) {
                 if (u.getReference().equals(reference))
-                    throw new RemoteException(
-                            "Vous êtes déjà connecté avec l'id " + u);
+                    throw new AlreadyConnectedException(u);
             }
             nouveau.setReference(reference);
         } catch (ServerNotActiveException e) {
@@ -69,37 +71,88 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     @Override
     public void send(String message, Utilisateur expediteur)
             throws RemoteException {
-        if (this.listeUtilisateurs.contains(expediteur)) {
-            this.listeMessages.add(new Message(message, expediteur));
-            System.out.println(expediteur + ": " + message);
-        } else {
-            throw new RemoteException("Vous n'êtes pas connecté.");
+        try {
+            if (utilisateurValide(expediteur)) {
+                this.listeMessages.add(new Message(message, expediteur));
+                System.out.println(expediteur + ": " + message);
+            } else {
+                throw new NotConnectedException();
+            }
+        } catch (ServerNotActiveException e) {
+            throw new RemoteException("Erreur interne.");
         }
     }
 
     @Override
     public void bye(Utilisateur utilisateur) throws RemoteException {
-        this.listeUtilisateurs.remove(utilisateur);
-        Message alerte = new Message(utilisateur + " s'est déconnecté.",
-                utilisateur);
-        this.listeMessages.add(alerte);
-        System.out.println(alerte);
+        try {
+            if (utilisateurValide(utilisateur)) {
+                this.listeUtilisateurs.remove(utilisateur);
+                Message alerte = new Message(
+                        utilisateur + " s'est déconnecté.", utilisateur);
+                this.listeMessages.add(alerte);
+                System.out.println(alerte);
+            } else
+                throw new NotConnectedException();
+        } catch (ServerNotActiveException e) {
+            throw new RemoteException("Erreur interne.");
+        }
     }
 
     @Override
     public ArrayList<Utilisateur> who() throws RemoteException {
-        System.out.println("Requête who");
-        return this.listeUtilisateurs;
+        String reference;
+        try {
+            reference = RemoteServer.getClientHost();
+            boolean connecte = false;
+            for (Utilisateur u : this.listeUtilisateurs) {
+                connecte |= u.getReference().equals(reference);
+
+            }
+            if (connecte) {
+                System.out.println("Requête who");
+                return this.listeUtilisateurs;
+            } else
+                throw new NotConnectedException();
+        } catch (ServerNotActiveException e) {
+            throw new RemoteException("Erreur interne.");
+        }
+
     }
 
     @Override
     public ArrayList<Message> getMessages(Date date) throws RemoteException {
-        ArrayList<Message> listeTemp = new ArrayList<>();
-        for (Message m : this.listeMessages) {
-            if (m.getDateEmission().after(date))
-                listeTemp.add(m);
+        try {
+            String reference = RemoteServer.getClientHost();
+            boolean connecte = false;
+            for (Utilisateur u : this.listeUtilisateurs) {
+                connecte |= u.getReference().equals(reference);
+
+            }
+            if (connecte) {
+                ArrayList<Message> listeTemp = new ArrayList<>();
+                for (Message m : this.listeMessages) {
+                    if (m.getDateEmission().after(date))
+                        listeTemp.add(m);
+                }
+                // pas de log, sinon on spamme la console
+                return listeTemp;
+            } else
+                throw new NotConnectedException();
+        } catch (ServerNotActiveException e) {
+            throw new RemoteException("Erreur interne.");
         }
-        // pas de log, sinon on spamme la console
-        return listeTemp;
+    }
+
+    private boolean utilisateurValide(Utilisateur u)
+            throws ServerNotActiveException {
+        String reference = RemoteServer.getClientHost();
+        if (u == null)
+            return false;
+        else if (u.getReference().equals(reference)
+                && listeUtilisateurs.contains(u))
+            return true;
+        else
+            return false;
     }
 }

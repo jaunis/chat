@@ -15,7 +15,6 @@ public class Client {
     private Utilisateur utilisateur;
 
     private Interpreteur interpreteur;
-
     private Visualisateur visualisateur;
     private Updater updater;
     private GestionnaireTexte gestionnaireTexte;
@@ -26,7 +25,6 @@ public class Client {
         this.visualisateur = new Visualisateur(this);
         this.interpreteur = new Interpreteur(this);
         this.gestionnaireTexte = new GestionnaireTexte(this);
-
         this.updater = new Updater(this);
 
         this.visualisateur.start();
