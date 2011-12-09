@@ -24,6 +24,10 @@ public class Visualisateur extends Thread {
         this.client = clientIn;
     }
 
+    /**
+     * Lance une boucle infinie qui appelle le client régulièrement pour
+     * afficher les nouveaux messages (s'il y en a).
+     */
     @Override
     public void run() {
         while (true) {

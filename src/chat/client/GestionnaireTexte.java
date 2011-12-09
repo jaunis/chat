@@ -1,5 +1,6 @@
 package chat.client;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -31,7 +32,13 @@ public class GestionnaireTexte extends Thread {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            this.client.getInterpreteur().traiterTexte(scanner.nextLine());
+            try {
+                System.out.println(System.in.read());
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            // this.client.getInterpreteur().traiterTexte(scanner.nextLine());
         }
     }
 }
