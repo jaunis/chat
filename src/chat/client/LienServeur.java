@@ -48,44 +48,38 @@ public class LienServeur {
             // Si la ligne est vide, ne rien faire.
         } catch (NotConnectedException e) {
             Visualisateur.displayError(e.getMessage());
-        } catch (AlreadyConnectedException e) {
-            Visualisateur.displayError(e.getMessage());
-        } catch (IdAlreadyUsedException e) {
-            Visualisateur.displayError(e.getMessage());
+        } catch(IdAlreadyUsedException e) {
+        	Visualisateur.displayError(e.getMessage());
+        } catch(AlreadyConnectedException e) {
+        	Visualisateur.displayError(e.getMessage());
         } catch (RemoteException e) {
             Visualisateur.displayError(e.getMessage());
         }
     }
 
-    public void bye() throws RemoteException {
-        this.serveur.bye(this.client.getUtilisateur());
+    public void bye() throws RemoteException, NotConnectedException {
+        
+        	this.serveur.bye(this.client.getUtilisateur());
+        	Visualisateur.display(
+        			this.client.getUtilisateur() + " s'est déconnecté.");
+        	 this.client.getUpdater().arreter();
     }
 
-    public void connect(String pseudo) throws RemoteException {
-        Message retour = this.serveur.connect(pseudo);
-        this.client.setUtilisateur(retour.getExpediteur());
-        this.dateDernierMessage = retour.getDateEmission();
-        List<Message> liste = new ArrayList<>();
-        liste.add(retour);
-        this.client.addMessages(liste);
-        System.out.println(retour);
+    public void connect(String pseudo) throws RemoteException, AlreadyConnectedException, IdAlreadyUsedException {
+        
+        	Message retour = this.serveur.connect(pseudo);
+            this.client.setUtilisateur(retour.getExpediteur());
+            this.dateDernierMessage = retour.getDateEmission();
+            List<Message> liste = new ArrayList<>();
+            liste.add(retour);
+            this.client.addMessages(liste);
     }
 
-    public void getMessages() {
-        try {
-            this.updateMessages();
-        } catch (NotConnectedException e) {
-            Visualisateur.displayError(e.getMessage());
-        } catch (AlreadyConnectedException e) {
-            Visualisateur.displayError(e.getMessage());
-        } catch (IdAlreadyUsedException e) {
-            Visualisateur.displayError(e.getMessage());
-        } catch (RemoteException e) {
-            Visualisateur.displayError(e.getMessage());
-        }
+    public void getMessages() throws RemoteException, NotConnectedException {
+        this.updateMessages();
     }
 
-    public void updateMessages() throws RemoteException {
+    public void updateMessages() throws RemoteException, NotConnectedException {
         if (this.dateDernierMessage != null) {
             List<Message> retour = this.serveur
                     .getMessages(this.dateDernierMessage);
@@ -102,11 +96,11 @@ public class LienServeur {
         return this.dateDernierMessage;
     }
 
-    public void sendMessage(String message) throws RemoteException {
+    public void sendMessage(String message) throws RemoteException, NotConnectedException {
         this.serveur.send(message, this.client.getUtilisateur());
     }
 
-    public void who() throws RemoteException {
+    public void who() throws RemoteException, NotConnectedException {
         List<Utilisateur> listeU = this.serveur.who();
         for (Utilisateur u : listeU) {
             Visualisateur.display(u.getId());

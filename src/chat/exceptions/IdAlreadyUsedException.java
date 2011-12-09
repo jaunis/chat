@@ -3,13 +3,12 @@
  */
 package chat.exceptions;
 
-import java.rmi.RemoteException;
 
 /**
  * @author Jean AUNIS
  *
  */
-public class IdAlreadyUsedException extends RemoteException {
+public class IdAlreadyUsedException extends Exception {
 
 	/**
 	 * 

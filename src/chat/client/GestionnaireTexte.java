@@ -31,7 +31,7 @@ public class GestionnaireTexte extends Thread {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            this.client.getInterpreteur().traiterTexte(scanner.nextLine());
+    			this.client.getInterpreteur().traiterTexte(scanner.nextLine());        	
         }
     }
 }

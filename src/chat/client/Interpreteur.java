@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.util.NoSuchElementException;
 
 import chat.commun.Commandes;
+import chat.exceptions.NotConnectedException;
 
 public class Interpreteur {
 
@@ -24,7 +25,11 @@ public class Interpreteur {
 
     public void traiterMessage(String texte) {
         try {
-            this.client.getLienServeur().sendMessage(texte);
+            try {
+				this.client.getLienServeur().sendMessage(texte);
+			} catch (NotConnectedException e) {
+				Visualisateur.displayError(e.getMessage());
+			}
         } catch (RemoteException e) {
             e.printStackTrace();
         }
