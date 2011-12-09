@@ -10,6 +10,7 @@ import chat.serveur.Serveur;
 public class Client {
 
     private List<Message> listeMessages = new ArrayList<>();
+    private List<Message> listeMessagesAAfficher = new ArrayList<>();
 
     private Utilisateur utilisateur;
 
@@ -72,19 +73,14 @@ public class Client {
     }
 
     public void addMessages(List<Message> messages) {
+        this.listeMessagesAAfficher.addAll(messages);
         this.listeMessages.addAll(messages);
     }
 
-    public List<Message> getDerniersMessages() {
-        if (this.lienServeur.getDateDernierMessage() == null) {
-            return this.getAllMessages();
-        }
-        List<Message> liste = new ArrayList<>();
-        for (Message m : this.listeMessages) {
-            if (m.getDateEmission().after(m.getDateEmission())) {
-                liste.add(m);
-            }
-        }
-        return liste;
+    public List<Message> getMessagesAAfficher() {
+        List<Message> messagesAAfficher = new ArrayList<>(
+                this.listeMessagesAAfficher);
+        this.listeMessagesAAfficher.clear();
+        return messagesAAfficher;
     }
 }

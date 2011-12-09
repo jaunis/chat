@@ -10,6 +10,7 @@ public class Commandes {
     public static final String bye = "bye";
 
     public static final String who = "who";
+
     public static final String send = "send";
 
     private static List<String> listeMotsCles;

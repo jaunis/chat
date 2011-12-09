@@ -5,7 +5,7 @@ import java.util.List;
 import chat.commun.Message;
 
 /**
- * @author Daniel
+ * @author Daniel Lefevre
  */
 public class Visualisateur extends Thread {
 
@@ -27,16 +27,12 @@ public class Visualisateur extends Thread {
     @Override
     public void run() {
         while (true) {
-            List<Message> display;
 
-            if (this.client.getLienServeur().getDateDernierMessage() != null) {
-                display = this.client.getDerniersMessages();
-            } else {
-                display = this.client.getAllMessages();
-            }
-
-            for (Message m : display) {
-                System.out.println(m.getContenu());
+            List<Message> messageAAfficher = this.client.getMessagesAAfficher();
+            if (!messageAAfficher.isEmpty()) {
+                for (Message m : messageAAfficher) {
+                    System.out.println(m.getContenu());
+                }
             }
 
             try {
