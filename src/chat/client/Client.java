@@ -67,11 +67,24 @@ public class Client {
         }
     }
 
-    public void setMessages(List<Message> retour) {
-        this.listeMessages = retour;
+    public List<Message> getAllMessages() {
+        return this.listeMessages;
     }
 
-    public List<Message> getMessages() {
-        return this.listeMessages;
+    public void addMessages(List<Message> messages) {
+        this.listeMessages.addAll(messages);
+    }
+
+    public List<Message> getDerniersMessages() {
+        if (this.lienServeur.getDateDernierMessage() == null) {
+            return this.getAllMessages();
+        }
+        List<Message> liste = new ArrayList<>();
+        for (Message m : this.listeMessages) {
+            if (m.getDateEmission().after(m.getDateEmission())) {
+                liste.add(m);
+            }
+        }
+        return liste;
     }
 }

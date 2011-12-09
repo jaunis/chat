@@ -53,13 +53,13 @@ public class LienServeur {
         this.serveur.bye(this.client.getUtilisateur());
     }
 
-    public void connect(String userID) throws RemoteException {
-        Message retour = this.serveur.connect(userID);
+    public void connect(String pseudo) throws RemoteException {
+        Message retour = this.serveur.connect(pseudo);
         this.client.setUtilisateur(retour.getExpediteur());
         this.dateDernierMessage = retour.getDateEmission();
-        ArrayList<Message> liste = new ArrayList<>();
+        List<Message> liste = new ArrayList<>();
         liste.add(retour);
-        this.client.setMessages(liste);
+        this.client.addMessages(liste);
         System.out.println(retour);
     }
 
@@ -72,19 +72,14 @@ public class LienServeur {
     }
 
     public void updateMessages() throws RemoteException {
-
         if (this.dateDernierMessage != null) {
             List<Message> retour = this.serveur
                     .getMessages(this.dateDernierMessage);
-            this.client.setMessages(retour);
+            this.client.addMessages(retour);
 
             if (!retour.isEmpty()) {
                 this.dateDernierMessage = retour.get(retour.size() - 1)
                         .getDateEmission();
-
-                for (Message m : retour) {
-                    Visualisateur.display(m.getContenu());
-                }
             }
         }
     }
