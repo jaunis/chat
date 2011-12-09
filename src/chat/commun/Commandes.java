@@ -10,6 +10,7 @@ public class Commandes {
     public static final String bye = "bye";
 
     public static final String who = "who";
+    public static final String send = "send";
 
     private static List<String> listeMotsCles;
 
@@ -26,6 +27,7 @@ public class Commandes {
         Commandes.listeMotsCles.add(connect);
         Commandes.listeMotsCles.add(bye);
         Commandes.listeMotsCles.add(who);
+        Commandes.listeMotsCles.add(send);
     }
 
     private static boolean isInit() {
