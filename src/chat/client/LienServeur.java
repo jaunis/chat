@@ -41,7 +41,7 @@ public class LienServeur {
      * @param serveurIn
      *            le serveur
      */
-    public LienServeur(Client clientIn, Serveur serveurIn) {
+    public LienServeur(final Client clientIn, final Serveur serveurIn) {
         this.client = clientIn;
         this.serveur = serveurIn;
     }
@@ -54,7 +54,7 @@ public class LienServeur {
      * @param texte
      *            la commande, suivie du texte entré par l'utilisateur
      */
-    public void traiterCommande(String texte) {
+    public final void traiterCommande(final String texte) {
         String commande;
         try {
             commande = Interpreteur.getCommand(texte);
@@ -88,7 +88,7 @@ public class LienServeur {
      * @throws RemoteException
      *             si une erreur apparait dans le serveur
      */
-    public void bye() throws RemoteException, NotConnectedException {
+    public final void bye() throws RemoteException, NotConnectedException {
 
         this.serveur.bye(this.client.getUtilisateur());
         this.client.stopUpdater();
@@ -103,7 +103,7 @@ public class LienServeur {
      * @throws RemoteException
      *             si une erreur apparait dans le serveur
      */
-    public void connect(String pseudo) throws RemoteException,
+    public final void connect(final String pseudo) throws RemoteException,
             AlreadyConnectedException, IdAlreadyUsedException {
 
         Message retour = this.serveur.connect(pseudo);
@@ -118,7 +118,7 @@ public class LienServeur {
      * Appelle la méthode updateMessages pour récupérer les derniers messages du
      * serveur uniquement si l'utilisateur est déjà connecté.
      */
-    public void getMessages() {
+    public final void getMessages() {
         try {
             this.updateMessages();
         } catch (RemoteException e) {
@@ -133,7 +133,8 @@ public class LienServeur {
      * @throws RemoteException
      *             si une erreur apparait dans le serveur
      */
-    public void updateMessages() throws RemoteException, NotConnectedException {
+    public final void updateMessages() throws RemoteException,
+            NotConnectedException {
         // Récupérer la liste des nouveaux messages (depuis la date du
         // dernier message.
         List<Message> nouveauxMessages = this.serveur
@@ -161,7 +162,7 @@ public class LienServeur {
      * @throws RemoteException
      *             si une erreur apparait dans le serveur
      */
-    public void sendMessage(String message) throws RemoteException,
+    public final void sendMessage(final String message) throws RemoteException,
             NotConnectedException {
         this.serveur.send(message, this.client.getUtilisateur());
     }
@@ -171,11 +172,10 @@ public class LienServeur {
      * @throws RemoteException
      *             si une erreur apparait dans le serveur
      */
-    public void who() throws RemoteException, NotConnectedException {
+    public final void who() throws RemoteException, NotConnectedException {
         List<Utilisateur> listeU = this.serveur.who();
 
-        this.client.getInterfaceGraphique().display(
-                "Liste des utilisateurs : \n");
+        this.client.getInterfaceGraphique().display("Liste des utilisateurs :");
 
         // Demande au visualisateur d'afficher tout cela.
         for (Utilisateur u : listeU) {
