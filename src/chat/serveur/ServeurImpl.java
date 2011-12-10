@@ -45,15 +45,16 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     }
 
     @Override
-    public Message connect(String id) throws RemoteException, IdAlreadyUsedException, AlreadyConnectedException {
+    public Message connect(String id) throws RemoteException,
+            IdAlreadyUsedException, AlreadyConnectedException {
         Utilisateur nouveau = new Utilisateur(id);
         if (this.listeUtilisateurs.contains(nouveau))
             throw new IdAlreadyUsedException(id);
         try {
             String reference = RemoteServer.getClientHost();
             for (Utilisateur u : this.listeUtilisateurs) {
-                if (u.getReference().equals(reference))
-                    throw new AlreadyConnectedException(u);
+                // if (u.getReference().equals(reference))
+                // throw new AlreadyConnectedException(u);
             }
             nouveau.setReference(reference);
         } catch (ServerNotActiveException e) {
@@ -84,7 +85,8 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     }
 
     @Override
-    public void bye(Utilisateur utilisateur) throws RemoteException, NotConnectedException {
+    public void bye(Utilisateur utilisateur) throws RemoteException,
+            NotConnectedException {
         try {
             if (utilisateurValide(utilisateur)) {
                 this.listeUtilisateurs.remove(utilisateur);
@@ -100,7 +102,8 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     }
 
     @Override
-    public ArrayList<Utilisateur> who() throws RemoteException, NotConnectedException {
+    public ArrayList<Utilisateur> who() throws RemoteException,
+            NotConnectedException {
         String reference;
         try {
             reference = RemoteServer.getClientHost();
@@ -121,7 +124,8 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     }
 
     @Override
-    public ArrayList<Message> getMessages(Date date) throws RemoteException, NotConnectedException {
+    public ArrayList<Message> getMessages(Date date) throws RemoteException,
+            NotConnectedException {
         try {
             String reference = RemoteServer.getClientHost();
             boolean connecte = false;

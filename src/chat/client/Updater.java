@@ -13,6 +13,7 @@ public class Updater extends Thread {
     private Client client;
 
     private boolean continuer = true;
+    private boolean pause = false;
 
     /**
      * Constructeur.
@@ -28,14 +29,24 @@ public class Updater extends Thread {
         this.continuer = false;
     }
 
+    public void pause() {
+        this.pause = true;
+    }
+
+    public void reprendre() {
+        this.pause = false;
+    }
+
     @Override
     public void run() {
         while (this.continuer) {
-            this.client.getLienServeur().getMessages();
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (!this.pause) {
+                this.client.getLienServeur().getMessages();
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

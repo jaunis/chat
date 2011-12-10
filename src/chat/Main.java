@@ -8,7 +8,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import chat.client.Client;
-import chat.client.ig.InterfaceGraphique;
+import chat.client.InterfaceGraphique;
 import chat.serveur.Serveur;
 import chat.serveur.ServeurImpl;
 

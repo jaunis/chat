@@ -1,10 +1,9 @@
-package chat.client.ig;
+package chat.client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,9 +11,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-
-import chat.client.Client;
-import chat.commun.Message;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class InterfaceGraphique extends JFrame {
 
@@ -27,8 +25,6 @@ public class InterfaceGraphique extends JFrame {
      * Serial version UID.
      */
     private static final long serialVersionUID = 1L;
-
-    private Thread updater;
 
     private JTextArea chatText;
     private TextReader chatLine;
@@ -131,6 +127,32 @@ public class InterfaceGraphique extends JFrame {
                 @Override
                 public void keyTyped(final KeyEvent e) {
                     // Not used.
+                }
+            });
+
+            this.getDocument().addDocumentListener(new DocumentListener() {
+
+                public void testEmpty() {
+                    if (!TextReader.this.getText().equals("")) {
+                        InterfaceGraphique.this.getClient().interrompreUpdate();
+                    } else {
+                        InterfaceGraphique.this.getClient().reprendreUpdate();
+                    }
+                }
+
+                @Override
+                public void removeUpdate(final DocumentEvent e) {
+                    this.testEmpty();
+                }
+
+                @Override
+                public void insertUpdate(final DocumentEvent e) {
+                    this.testEmpty();
+                }
+
+                @Override
+                public void changedUpdate(final DocumentEvent e) {
+                    // Not used because it doesn't work.
                 }
             });
         }

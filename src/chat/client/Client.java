@@ -3,7 +3,6 @@ package chat.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import chat.client.ig.InterfaceGraphique;
 import chat.commun.Message;
 import chat.commun.Utilisateur;
 import chat.serveur.Serveur;
@@ -64,5 +63,17 @@ public class Client {
     public void startUpdater() {
         this.updater = new Updater(this);
         this.updater.start();
+    }
+
+    public void interrompreUpdate() {
+        if (this.updater != null) {
+            this.updater.pause();
+        }
+    }
+
+    public void reprendreUpdate() {
+        if (this.updater != null) {
+            this.updater.reprendre();
+        }
     }
 }
