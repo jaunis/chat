@@ -1,50 +1,53 @@
 package chat.client;
 
-import java.rmi.RemoteException;
-
-import chat.exceptions.NotConnectedException;
-
+/**
+ * Cette classe implémente un Thread appelant régulièrement le serveur pour
+ * récupérer les derniers messages.
+ * @author Daniel Lefevre
+ */
 public class Updater extends Thread {
 
     /**
      * Client actuel.
      */
-    Client client;
-    private boolean enMarche = true;
+    private Client client;
+
+    private boolean continuer = true;
+    private boolean pause = false;
 
     /**
      * Constructeur.
      * @param clientIn
      *            le client
-     * @param serveurIn
-     *            le serveur
      */
     public Updater(Client clientIn) {
         super();
         this.client = clientIn;
     }
 
+    public void stopThread() {
+        this.continuer = false;
+    }
+
+    public void pause() {
+        this.pause = true;
+    }
+
+    public void reprendre() {
+        this.pause = false;
+    }
+
     @Override
     public void run() {
-        while (enMarche) {
-            try {
-				this.client.getLienServeur().getMessages();
-			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (NotConnectedException e1) {
-				Visualisateur.displayError(e1.getMessage());
-			}
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        while (this.continuer) {
+            if (!this.pause) {
+                this.client.getLienServeur().getMessages();
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
-    }
-    
-    public void arreter()
-    {
-    	enMarche = false;
     }
 }

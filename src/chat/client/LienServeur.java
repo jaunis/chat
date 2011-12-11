@@ -14,21 +14,47 @@ import chat.exceptions.IdAlreadyUsedException;
 import chat.exceptions.NotConnectedException;
 import chat.serveur.Serveur;
 
+/**
+ * Cette classe implémente la liaison du client avec le serveur. Toute
+ * transaction doit passer par ici.
+ * @author Daniel Lefevre
+ */
 public class LienServeur {
 
+    /**
+     * La référence vers le serveur.
+     */
     private Serveur serveur;
+    /**
+     * Le client.
+     */
     private Client client;
+    /**
+     * La date du dernier message.
+     */
     private Date dateDernierMessage;
 
-    public LienServeur(Client clientIn, Serveur serveurIn) {
+    /**
+     * Constructeur.
+     * @param clientIn
+     *            le client
+     * @param serveurIn
+     *            le serveur
+     */
+    public LienServeur(final Client clientIn, final Serveur serveurIn) {
         this.client = clientIn;
         this.serveur = serveurIn;
     }
 
     // TODO : make only one method action managing all the commands and treating
     // all the exceptions.
-
-    public void traiterCommande(String texte) {
+    /**
+     * Traite la commande entrée par l'utilisateur. En fonction de celle-ci,
+     * appelle la fonction correspondante.
+     * @param texte
+     *            la commande, suivie du texte entré par l'utilisateur
+     */
+    public final void traiterCommande(final String texte) {
         String commande;
         try {
             commande = Interpreteur.getCommand(texte);
@@ -47,63 +73,113 @@ public class LienServeur {
         } catch (NoSuchElementException e) {
             // Si la ligne est vide, ne rien faire.
         } catch (NotConnectedException e) {
-            Visualisateur.displayError(e.getMessage());
-        } catch(IdAlreadyUsedException e) {
-        	Visualisateur.displayError(e.getMessage());
-        } catch(AlreadyConnectedException e) {
-        	Visualisateur.displayError(e.getMessage());
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
+        } catch (IdAlreadyUsedException e) {
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
+        } catch (AlreadyConnectedException e) {
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
         } catch (RemoteException e) {
-            Visualisateur.displayError(e.getMessage());
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
         }
     }
 
-    public void bye() throws RemoteException, NotConnectedException {
-        
-        	this.serveur.bye(this.client.getUtilisateur());
-        	Visualisateur.display(
-        			this.client.getUtilisateur() + " s'est déconnecté.");
-        	 this.client.getUpdater().arreter();
+    /**
+     * Commande "bye", c'est-à-dire se déconnecter.
+     * @throws RemoteException
+     *             si une erreur apparait dans le serveur
+     */
+    public final void bye() throws RemoteException, NotConnectedException {
+
+        this.serveur.bye(this.client.getUtilisateur());
+        this.client.stopUpdater();
+        this.client.getInterfaceGraphique().display(
+                this.client.getUtilisateur() + " s'est déconnecté.");
     }
 
-    public void connect(String pseudo) throws RemoteException, AlreadyConnectedException, IdAlreadyUsedException {
-        
-        	Message retour = this.serveur.connect(pseudo);
-            this.client.setUtilisateur(retour.getExpediteur());
-            this.dateDernierMessage = retour.getDateEmission();
-            List<Message> liste = new ArrayList<>();
-            liste.add(retour);
-            this.client.addMessages(liste);
+    /**
+     * Demande au serveur de se connecter sous le pseudo userID.
+     * @param pseudo
+     *            le pseudo demandé
+     * @throws RemoteException
+     *             si une erreur apparait dans le serveur
+     */
+    public final void connect(final String pseudo) throws RemoteException,
+            AlreadyConnectedException, IdAlreadyUsedException {
+
+        Message retour = this.serveur.connect(pseudo);
+        this.client.startUpdater();
+        this.client.setUtilisateur(retour.getExpediteur());
+        this.dateDernierMessage = retour.getDateEmission();
+        this.client.getInterfaceGraphique().display(
+                "L'utilisateur " + retour.getExpediteur() + " s'est connecté.");
     }
 
-    public void getMessages() throws RemoteException, NotConnectedException {
-        this.updateMessages();
+    /**
+     * Appelle la méthode updateMessages pour récupérer les derniers messages du
+     * serveur uniquement si l'utilisateur est déjà connecté.
+     */
+    public final void getMessages() {
+        try {
+            this.updateMessages();
+        } catch (RemoteException e) {
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
+        } catch (NotConnectedException e) {
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
+        }
     }
 
-    public void updateMessages() throws RemoteException, NotConnectedException {
-        if (this.dateDernierMessage != null) {
-            List<Message> retour = this.serveur
-                    .getMessages(this.dateDernierMessage);
-            this.client.addMessages(retour);
+    /**
+     * Met à jour la liste des messages avec les derniers message du serveur.
+     * @throws RemoteException
+     *             si une erreur apparait dans le serveur
+     */
+    public final void updateMessages() throws RemoteException,
+            NotConnectedException {
+        // Récupérer la liste des nouveaux messages (depuis la date du
+        // dernier message.
+        List<Message> nouveauxMessages = this.serveur
+                .getMessages(this.dateDernierMessage);
 
-            if (!retour.isEmpty()) {
-                this.dateDernierMessage = retour.get(retour.size() - 1)
-                        .getDateEmission();
+        if (!nouveauxMessages.isEmpty()) {
+            // S'il y a au moins un message, mettre à jour la liste des
+            // messages.
+            for (Message m : nouveauxMessages) {
+                this.client.getInterfaceGraphique().display(m.toString());
             }
+
+            // Si il y a au moins un message, mettre à jour la date de dernier
+            // message.
+            this.dateDernierMessage = new Date(nouveauxMessages
+                    .get(nouveauxMessages.size() - 1).getDateEmission()
+                    .getTime());
         }
     }
 
-    public Date getDateDernierMessage() {
-        return this.dateDernierMessage;
-    }
-
-    public void sendMessage(String message) throws RemoteException, NotConnectedException {
+    /**
+     * Envoye le message au serveur pour être affiché.
+     * @param message
+     *            le message
+     * @throws RemoteException
+     *             si une erreur apparait dans le serveur
+     */
+    public final void sendMessage(final String message) throws RemoteException,
+            NotConnectedException {
         this.serveur.send(message, this.client.getUtilisateur());
     }
 
-    public void who() throws RemoteException, NotConnectedException {
+    /**
+     * Demande au serveur la liste des utilisateurs et l'affiche.
+     * @throws RemoteException
+     *             si une erreur apparait dans le serveur
+     */
+    public final void who() throws RemoteException, NotConnectedException {
         List<Utilisateur> listeU = this.serveur.who();
+
+        this.client.getInterfaceGraphique().display("Liste des utilisateurs :");
+
+        // Demande au visualisateur d'afficher tout cela.
         for (Utilisateur u : listeU) {
-            Visualisateur.display(u.getId());
+            this.client.getInterfaceGraphique().display(u.getId());
         }
     }
 }

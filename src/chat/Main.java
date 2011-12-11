@@ -8,6 +8,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import chat.client.Client;
+import chat.client.InterfaceGraphique;
 import chat.serveur.Serveur;
 import chat.serveur.ServeurImpl;
 
@@ -23,7 +24,7 @@ public class Main {
             url = "//" + InetAddress.getLocalHost().getHostAddress() + ":"
                     + ServeurImpl.port + "/serveur";
             Serveur serveur = (Serveur) Naming.lookup(url);
-            Client client = new Client(serveur);
+            new Client(serveur);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {

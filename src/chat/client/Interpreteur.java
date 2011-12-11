@@ -1,20 +1,38 @@
 package chat.client;
 
-import java.rmi.RemoteException;
 import java.util.NoSuchElementException;
 
 import chat.commun.Commandes;
-import chat.exceptions.NotConnectedException;
 
+/**
+ * Cette classe implémente un interpréteur de commandes.
+ * @author Daniel Lefèvre
+ */
 public class Interpreteur {
 
+    /**
+     * Le client.
+     */
     private Client client;
 
+    /**
+     * Constructeur.
+     * @param clientIn
+     *            le client
+     */
     public Interpreteur(Client clientIn) {
         this.client = clientIn;
     }
 
-    public static String getCommand(String texte) throws NoSuchElementException {
+    /**
+     * Extrait le premier mot d'un texte et vérifie si c'est une commande, ou
+     * pas.
+     * @param texte
+     *            le texte entré par l'utilsateur
+     * @return la commande si l'utilisateur a commencé son entrée par une
+     *         commande connue, null sinon
+     */
+    public static String getCommand(String texte) {
         for (String m : Commandes.getListeMotsCles()) {
             if (texte.startsWith(m)) {
                 return m;
@@ -23,18 +41,11 @@ public class Interpreteur {
         return null;
     }
 
-    public void traiterMessage(String texte) {
-        try {
-            try {
-				this.client.getLienServeur().sendMessage(texte);
-			} catch (NotConnectedException e) {
-				Visualisateur.displayError(e.getMessage());
-			}
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Traiter le texte entré par l'utilisateur.
+     * @param texte
+     *            le texte entré
+     */
     public void traiterTexte(String texte) {
         // Séparer le début du mot.
         try {
