@@ -30,8 +30,8 @@ public class GestionnaireTexte extends Thread {
     @Override
     public void run() {
         Scanner scanner = new Scanner(System.in);
-        while (true) {
-    			this.client.getInterpreteur().traiterTexte(scanner.nextLine());        	
+        while (true) {	
+        	this.client.getInterpreteur().traiterTexte(scanner.nextLine());        	
         }
     }
 }
