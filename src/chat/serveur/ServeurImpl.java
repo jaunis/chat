@@ -53,8 +53,8 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
         try {
             String reference = RemoteServer.getClientHost();
             for (Utilisateur u : this.listeUtilisateurs) {
-                // if (u.getReference().equals(reference))
-                // throw new AlreadyConnectedException(u);
+                if (u.getReference().equals(reference))
+                    throw new AlreadyConnectedException(u);
             }
             nouveau.setReference(reference);
         } catch (ServerNotActiveException e) {

@@ -1,7 +1,6 @@
 package chat.client;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -44,43 +43,6 @@ public class LienServeur {
     public LienServeur(final Client clientIn, final Serveur serveurIn) {
         this.client = clientIn;
         this.serveur = serveurIn;
-    }
-
-    // TODO : make only one method action managing all the commands and treating
-    // all the exceptions.
-    /**
-     * Traite la commande entrée par l'utilisateur. En fonction de celle-ci,
-     * appelle la fonction correspondante.
-     * @param texte
-     *            la commande, suivie du texte entré par l'utilisateur
-     */
-    public final void traiterCommande(final String texte) {
-        String commande;
-        try {
-            commande = Interpreteur.getCommand(texte);
-
-            if (commande.equalsIgnoreCase(Commandes.connect)) {
-                String reste = texte.substring(texte.indexOf(' ') + 1);
-                this.client.getLienServeur().connect(reste);
-            } else if (commande.equalsIgnoreCase(Commandes.bye)) {
-                this.client.getLienServeur().bye();
-            } else if (commande.equalsIgnoreCase(Commandes.who)) {
-                this.client.getLienServeur().who();
-            } else if (commande.equalsIgnoreCase(Commandes.send)) {
-                String reste = texte.substring(texte.indexOf(' ') + 1);
-                this.client.getLienServeur().sendMessage(reste);
-            }
-        } catch (NoSuchElementException e) {
-            // Si la ligne est vide, ne rien faire.
-        } catch (NotConnectedException e) {
-            this.client.getInterfaceGraphique().displayError(e.getMessage());
-        } catch (IdAlreadyUsedException e) {
-            this.client.getInterfaceGraphique().displayError(e.getMessage());
-        } catch (AlreadyConnectedException e) {
-            this.client.getInterfaceGraphique().displayError(e.getMessage());
-        } catch (RemoteException e) {
-            this.client.getInterfaceGraphique().displayError(e.getMessage());
-        }
     }
 
     /**
@@ -129,6 +91,55 @@ public class LienServeur {
     }
 
     /**
+     * Envoye le message au serveur pour être affiché.
+     * @param message
+     *            le message
+     * @throws RemoteException
+     *             si une erreur apparait dans le serveur
+     */
+    public final void sendMessage(final String message) throws RemoteException,
+            NotConnectedException {
+        this.serveur.send(message, this.client.getUtilisateur());
+    }
+
+    // TODO : make only one method action managing all the commands and treating
+    // all the exceptions.
+    /**
+     * Traite la commande entrée par l'utilisateur. En fonction de celle-ci,
+     * appelle la fonction correspondante.
+     * @param texte
+     *            la commande, suivie du texte entré par l'utilisateur
+     */
+    public final void traiterCommande(final String texte) {
+        String commande;
+        try {
+            commande = Interpreteur.getCommand(texte);
+
+            if (commande.equalsIgnoreCase(Commandes.connect)) {
+                String reste = texte.substring(texte.indexOf(' ') + 1);
+                this.client.getLienServeur().connect(reste);
+            } else if (commande.equalsIgnoreCase(Commandes.bye)) {
+                this.client.getLienServeur().bye();
+            } else if (commande.equalsIgnoreCase(Commandes.who)) {
+                this.client.getLienServeur().who();
+            } else if (commande.equalsIgnoreCase(Commandes.send)) {
+                String reste = texte.substring(texte.indexOf(' ') + 1);
+                this.client.getLienServeur().sendMessage(reste);
+            }
+        } catch (NoSuchElementException e) {
+            // Si la ligne est vide, ne rien faire.
+        } catch (NotConnectedException e) {
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
+        } catch (IdAlreadyUsedException e) {
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
+        } catch (AlreadyConnectedException e) {
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
+        } catch (RemoteException e) {
+            this.client.getInterfaceGraphique().displayError(e.getMessage());
+        }
+    }
+
+    /**
      * Met à jour la liste des messages avec les derniers message du serveur.
      * @throws RemoteException
      *             si une erreur apparait dans le serveur
@@ -153,18 +164,6 @@ public class LienServeur {
                     .get(nouveauxMessages.size() - 1).getDateEmission()
                     .getTime());
         }
-    }
-
-    /**
-     * Envoye le message au serveur pour être affiché.
-     * @param message
-     *            le message
-     * @throws RemoteException
-     *             si une erreur apparait dans le serveur
-     */
-    public final void sendMessage(final String message) throws RemoteException,
-            NotConnectedException {
-        this.serveur.send(message, this.client.getUtilisateur());
     }
 
     /**

@@ -1,6 +1,5 @@
 package chat.exceptions;
 
-
 public class NotConnectedException extends Exception {
 
     /**
@@ -12,6 +11,6 @@ public class NotConnectedException extends Exception {
      * Constructeur.
      */
     public NotConnectedException() {
-    	super("Vous n'êtes pas connecté.");
+        super("Vous n'êtes pas connecté.");
     }
 }

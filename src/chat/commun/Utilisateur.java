@@ -12,19 +12,12 @@ public class Utilisateur implements Serializable {
         this.id = idIn;
     }
 
-    /**
-     * @return the reference
-     */
-    public String getReference() {
-        return this.reference;
-    }
-
-    /**
-     * @param referenceIn
-     *            the reference to set
-     */
-    public void setReference(String referenceIn) {
-        this.reference = referenceIn;
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Utilisateur) {
+            return ((Utilisateur) o).getId().equals(this.id);
+        }
+        return false;
     }
 
     /**
@@ -35,6 +28,18 @@ public class Utilisateur implements Serializable {
     }
 
     /**
+     * @return the reference
+     */
+    public String getReference() {
+        return this.reference;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    /**
      * @param idIn
      *            the id to set
      */
@@ -42,17 +47,12 @@ public class Utilisateur implements Serializable {
         this.id = idIn;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof Utilisateur) {
-            return ((Utilisateur) o).getId().equals(this.id);
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
+    /**
+     * @param referenceIn
+     *            the reference to set
+     */
+    public void setReference(String referenceIn) {
+        this.reference = referenceIn;
     }
 
     @Override

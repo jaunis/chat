@@ -5,7 +5,7 @@ package chat.client;
  * récupérer les derniers messages.
  * @author Daniel Lefevre
  */
-public class Updater extends Thread {
+public class MessageUpdater extends Thread {
 
     /**
      * Client actuel.
@@ -20,13 +20,9 @@ public class Updater extends Thread {
      * @param clientIn
      *            le client
      */
-    public Updater(Client clientIn) {
+    public MessageUpdater(Client clientIn) {
         super();
         this.client = clientIn;
-    }
-
-    public void stopThread() {
-        this.continuer = false;
     }
 
     public void pause() {
@@ -49,5 +45,9 @@ public class Updater extends Thread {
                 }
             }
         }
+    }
+
+    public void stopThread() {
+        this.continuer = false;
     }
 }

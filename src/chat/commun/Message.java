@@ -40,16 +40,12 @@ public class Message implements Serializable {
         this.dateEmission = new Date();
     }
 
-    @Override
-    public String toString() {
-        return this.expediteur + ": " + this.contenu;
-    }
-
     /**
-     * @return the expediteur
+     * Getter.
+     * @return le contenu
      */
-    public Utilisateur getExpediteur() {
-        return this.expediteur;
+    public String getContenu() {
+        return this.contenu;
     }
 
     /**
@@ -61,10 +57,14 @@ public class Message implements Serializable {
     }
 
     /**
-     * Getter.
-     * @return le contenu
+     * @return the expediteur
      */
-    public String getContenu() {
-        return this.contenu;
+    public Utilisateur getExpediteur() {
+        return this.expediteur;
+    }
+
+    @Override
+    public String toString() {
+        return this.expediteur + ": " + this.contenu;
     }
 }
