@@ -113,7 +113,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
 
             }
             if (connecte) {
-                System.out.println("Requête who");
+                System.out.println("Requête WHO");
                 return this.listeUtilisateurs;
             } else
                 throw new NotConnectedException();

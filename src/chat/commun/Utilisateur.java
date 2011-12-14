@@ -2,18 +2,37 @@ package chat.commun;
 
 import java.io.Serializable;
 
+/**
+ * Cette classe implémente un utilisateur, avec un id de type String, et une
+ * référence créée par RMI.
+ * @author Daniel
+ */
 public class Utilisateur implements Serializable {
 
+    /**
+     * Serial version UID.
+     */
     private static final long serialVersionUID = 1L;
+    /**
+     * L'id de l'utilisateur, ie le pseudo.
+     */
     private String id;
+    /**
+     * Une référence créée par RMI.
+     */
     private String reference;
 
-    public Utilisateur(String idIn) {
+    /**
+     * Constructeur.
+     * @param idIn
+     *            l'id
+     */
+    public Utilisateur(final String idIn) {
         this.id = idIn;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(final Object o) {
         if (o instanceof Utilisateur) {
             return ((Utilisateur) o).getId().equals(this.id);
         }
@@ -23,19 +42,19 @@ public class Utilisateur implements Serializable {
     /**
      * @return the id
      */
-    public String getId() {
+    public final String getId() {
         return this.id;
     }
 
     /**
      * @return the reference
      */
-    public String getReference() {
+    public final String getReference() {
         return this.reference;
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return super.hashCode();
     }
 
@@ -43,7 +62,7 @@ public class Utilisateur implements Serializable {
      * @param idIn
      *            the id to set
      */
-    public void setId(String idIn) {
+    public final void setId(final String idIn) {
         this.id = idIn;
     }
 
@@ -51,12 +70,12 @@ public class Utilisateur implements Serializable {
      * @param referenceIn
      *            the reference to set
      */
-    public void setReference(String referenceIn) {
+    public final void setReference(final String referenceIn) {
         this.reference = referenceIn;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return this.id;
     }
 }

@@ -8,27 +8,33 @@ import java.util.List;
  * chaque commande.
  * @author Daniel Lefevre
  */
-public class Commandes {
+public final class Commandes {
 
     /**
-     * Le texte de la commande connect.
+     * Constructeur privé.
      */
-    public static final String connect = "connect";
+    private Commandes() {
+    }
 
     /**
-     * Le texte de la commande bye.
+     * Le texte de la commande CONNECT.
      */
-    public static final String bye = "bye";
+    public static final String CONNECT = "CONNECT";
 
     /**
-     * Le texte de la commande who.
+     * Le texte de la commande BYE.
      */
-    public static final String who = "who";
+    public static final String BYE = "BYE";
 
     /**
-     * Le texte de la commande send.
+     * Le texte de la commande WHO.
      */
-    public static final String send = "send";
+    public static final String WHO = "WHO";
+
+    /**
+     * Le texte de la commande SEND.
+     */
+    public static final String SEND = "SEND";
 
     /**
      * La liste des mot-clés des commandes.
@@ -53,10 +59,10 @@ public class Commandes {
      */
     private static void init() {
         Commandes.listeMotsCles = new ArrayList<>();
-        Commandes.listeMotsCles.add(connect);
-        Commandes.listeMotsCles.add(bye);
-        Commandes.listeMotsCles.add(who);
-        Commandes.listeMotsCles.add(send);
+        Commandes.listeMotsCles.add(CONNECT);
+        Commandes.listeMotsCles.add(BYE);
+        Commandes.listeMotsCles.add(WHO);
+        Commandes.listeMotsCles.add(SEND);
     }
 
     /**

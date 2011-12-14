@@ -126,7 +126,7 @@ public class InterfaceGraphique extends JFrame {
     }
 
     /**
-     * 
+     * Donne le texte entré à l'interpréteur pour que celui-ci l'analyse.
      */
     public final void traiterTexte() {
         this.client.getInterpreteur().traiterTexte(this.chatLine.getText());

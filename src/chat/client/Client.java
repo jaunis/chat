@@ -4,10 +4,10 @@ import chat.commun.Utilisateur;
 import chat.serveur.Serveur;
 
 /**
- * @author Daniel
- */
-/**
- * @author Daniel
+ * Cette classe implémente un client associé avec une interface graphique, un
+ * utilisateur dès qu'il s'est connecté, un updater de messages, et un
+ * interpréteur. La liste des messages est aussi sauvegardée.
+ * @author Daniel Lefevre
  */
 public class Client {
 

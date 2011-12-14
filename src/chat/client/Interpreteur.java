@@ -20,7 +20,7 @@ public class Interpreteur {
      * @param clientIn
      *            le client
      */
-    public Interpreteur(Client clientIn) {
+    public Interpreteur(final Client clientIn) {
         this.client = clientIn;
     }
 
@@ -32,7 +32,7 @@ public class Interpreteur {
      * @return la commande si l'utilisateur a commencé son entrée par une
      *         commande connue, null sinon
      */
-    public static String getCommand(String texte) {
+    public static String getCommand(final String texte) {
         for (String m : Commandes.getListeMotsCles()) {
             if (texte.startsWith(m)) {
                 return m;
@@ -46,7 +46,7 @@ public class Interpreteur {
      * @param texte
      *            le texte entré
      */
-    public void traiterTexte(String texte) {
+    public final void traiterTexte(final String texte) {
         // Séparer le début du mot.
         try {
             if (Interpreteur.getCommand(texte) != null) {

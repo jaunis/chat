@@ -46,9 +46,11 @@ public class LienServeur {
     }
 
     /**
-     * Commande "bye", c'est-à-dire se déconnecter.
+     * Commande "BYE", c'est-à-dire se déconnecter.
      * @throws RemoteException
      *             si une erreur apparait dans le serveur
+     * @throws NotConnectedException
+     *             si l'utilisateur n'est pas connecté
      */
     public final void bye() throws RemoteException, NotConnectedException {
 
@@ -64,6 +66,10 @@ public class LienServeur {
      *            le pseudo demandé
      * @throws RemoteException
      *             si une erreur apparait dans le serveur
+     * @throws AlreadyConnectedException
+     *             si l'utilisateur est déjà connecté sous un autre id
+     * @throws IdAlreadyUsedException
+     *             si l'id demandé est déjà utilisé
      */
     public final void connect(final String pseudo) throws RemoteException,
             AlreadyConnectedException, IdAlreadyUsedException {
@@ -96,14 +102,14 @@ public class LienServeur {
      *            le message
      * @throws RemoteException
      *             si une erreur apparait dans le serveur
+     * @throws NotConnectedException
+     *             si l'utilisateur n'est pas connecté
      */
     public final void sendMessage(final String message) throws RemoteException,
             NotConnectedException {
         this.serveur.send(message, this.client.getUtilisateur());
     }
 
-    // TODO : make only one method action managing all the commands and treating
-    // all the exceptions.
     /**
      * Traite la commande entrée par l'utilisateur. En fonction de celle-ci,
      * appelle la fonction correspondante.
@@ -115,14 +121,14 @@ public class LienServeur {
         try {
             commande = Interpreteur.getCommand(texte);
 
-            if (commande.equalsIgnoreCase(Commandes.connect)) {
+            if (commande.equalsIgnoreCase(Commandes.CONNECT)) {
                 String reste = texte.substring(texte.indexOf(' ') + 1);
                 this.client.getLienServeur().connect(reste);
-            } else if (commande.equalsIgnoreCase(Commandes.bye)) {
+            } else if (commande.equalsIgnoreCase(Commandes.BYE)) {
                 this.client.getLienServeur().bye();
-            } else if (commande.equalsIgnoreCase(Commandes.who)) {
+            } else if (commande.equalsIgnoreCase(Commandes.WHO)) {
                 this.client.getLienServeur().who();
-            } else if (commande.equalsIgnoreCase(Commandes.send)) {
+            } else if (commande.equalsIgnoreCase(Commandes.SEND)) {
                 String reste = texte.substring(texte.indexOf(' ') + 1);
                 this.client.getLienServeur().sendMessage(reste);
             }
@@ -143,6 +149,8 @@ public class LienServeur {
      * Met à jour la liste des messages avec les derniers message du serveur.
      * @throws RemoteException
      *             si une erreur apparait dans le serveur
+     * @throws NotConnectedException
+     *             si l'utilisateur n'est pas connecté
      */
     public final void updateMessages() throws RemoteException,
             NotConnectedException {
@@ -170,6 +178,8 @@ public class LienServeur {
      * Demande au serveur la liste des utilisateurs et l'affiche.
      * @throws RemoteException
      *             si une erreur apparait dans le serveur
+     * @throws NotConnectedException
+     *             si l'utilisateur n'est pas connecté
      */
     public final void who() throws RemoteException, NotConnectedException {
         List<Utilisateur> listeU = this.serveur.who();
