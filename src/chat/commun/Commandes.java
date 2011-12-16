@@ -17,24 +17,24 @@ public final class Commandes {
     }
 
     /**
-     * Le texte de la commande CONNECT.
+     * Le texte de la commande connect.
      */
-    public static final String CONNECT = "CONNECT";
+    public static final String CONNECT = "connect";
 
     /**
-     * Le texte de la commande BYE.
+     * Le texte de la commande bye.
      */
-    public static final String BYE = "BYE";
+    public static final String BYE = "bye";
 
     /**
-     * Le texte de la commande WHO.
+     * Le texte de la commande who.
      */
-    public static final String WHO = "WHO";
+    public static final String WHO = "who";
 
     /**
-     * Le texte de la commande SEND.
+     * Le texte de la commande send.
      */
-    public static final String SEND = "SEND";
+    public static final String SEND = "send";
 
     /**
      * La liste des mot-clés des commandes.
