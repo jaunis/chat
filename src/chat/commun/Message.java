@@ -34,37 +34,37 @@ public class Message implements Serializable {
      * @param expediteurIn
      *            l'expéditeur
      */
-    public Message(String contenuIn, Utilisateur expediteurIn) {
+    public Message(final String contenuIn, final Utilisateur expediteurIn) {
         this.contenu = contenuIn;
         this.expediteur = expediteurIn;
         this.dateEmission = new Date();
-    }
-
-    @Override
-    public String toString() {
-        return this.expediteur + ": " + this.contenu;
-    }
-
-    /**
-     * @return the expediteur
-     */
-    public Utilisateur getExpediteur() {
-        return this.expediteur;
-    }
-
-    /**
-     * Getter.
-     * @return the dateEmission
-     */
-    public Date getDateEmission() {
-        return this.dateEmission;
     }
 
     /**
      * Getter.
      * @return le contenu
      */
-    public String getContenu() {
+    public final String getContenu() {
         return this.contenu;
+    }
+
+    /**
+     * Getter.
+     * @return the dateEmission
+     */
+    public final Date getDateEmission() {
+        return this.dateEmission;
+    }
+
+    /**
+     * @return the expediteur
+     */
+    public final Utilisateur getExpediteur() {
+        return this.expediteur;
+    }
+
+    @Override
+    public final String toString() {
+        return this.expediteur + ": " + this.contenu;
     }
 }

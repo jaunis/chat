@@ -14,6 +14,10 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+/**
+ * Interface graphique du client. Avec gestion du texte et de l'affichage.
+ * @author Daniel Lefevre
+ */
 public class InterfaceGraphique extends JFrame {
 
     /**
@@ -26,9 +30,20 @@ public class InterfaceGraphique extends JFrame {
      */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * La zone de texte où afficher les messages.
+     */
     private JTextArea chatText;
+    /**
+     * La zone de texte où entrer les messages.
+     */
     private TextReader chatLine;
 
+    /**
+     * Constructeur.
+     * @param clientIn
+     *            le client
+     */
     public InterfaceGraphique(final Client clientIn) {
         super("RMI Chat");
 
@@ -37,6 +52,38 @@ public class InterfaceGraphique extends JFrame {
         this.initGUIComponents();
     }
 
+    /**
+     * Affiche un texte.
+     * @param texte
+     *            le texte
+     */
+    public final void display(final String texte) {
+        this.chatText.append(texte + "\n");
+        this.repaint();
+    }
+
+    /**
+     * Affiche un message d'erreur, c'est-à-dire le message avec le mot
+     * "Error : " avant.
+     * @param texte
+     *            le message d'erreur à afficher
+     */
+    public final void displayError(final String texte) {
+        this.chatText.append("Error : " + texte + "\n");
+        this.repaint();
+    }
+
+    /**
+     * Getter.
+     * @return le client
+     */
+    public final Client getClient() {
+        return this.client;
+    }
+
+    /**
+     * Initialise les composants graphiques de la fenêtre.
+     */
     private void initGUIComponents() {
         // Sets up the chat pane
         JPanel chatPane = new JPanel(new BorderLayout());
@@ -70,33 +117,26 @@ public class InterfaceGraphique extends JFrame {
     }
 
     /**
-     * Affiche un texte.
-     * @param texte
-     *            le texte
+     * Setter.
+     * @param clientIn
+     *            le nouveau client
      */
-    public final void display(final String texte) {
-        this.chatText.append(texte + "\n");
-        this.repaint();
-    }
-
-    public final void displayError(final String texte) {
-        this.chatText.append("Error : " + texte + "\n");
-        this.repaint();
-    }
-
-    public final Client getClient() {
-        return this.client;
-    }
-
     public final void setClient(final Client clientIn) {
         this.client = clientIn;
     }
 
+    /**
+     * Donne le texte entré à l'interpréteur pour que celui-ci l'analyse.
+     */
     public final void traiterTexte() {
         this.client.getInterpreteur().traiterTexte(this.chatLine.getText());
         this.chatLine.setText("");
     }
 
+    /**
+     * Sur-implémente un JTextField qui sert d'entrée pour l'utilisateur.
+     * @author Daniel Lefevre
+     */
     public class TextReader extends JTextField {
 
         /**
@@ -132,17 +172,9 @@ public class InterfaceGraphique extends JFrame {
 
             this.getDocument().addDocumentListener(new DocumentListener() {
 
-                public void testEmpty() {
-                    if (!TextReader.this.getText().equals("")) {
-                        InterfaceGraphique.this.getClient().interrompreUpdate();
-                    } else {
-                        InterfaceGraphique.this.getClient().reprendreUpdate();
-                    }
-                }
-
                 @Override
-                public void removeUpdate(final DocumentEvent e) {
-                    this.testEmpty();
+                public void changedUpdate(final DocumentEvent e) {
+                    // Not used because it doesn't work.
                 }
 
                 @Override
@@ -151,8 +183,16 @@ public class InterfaceGraphique extends JFrame {
                 }
 
                 @Override
-                public void changedUpdate(final DocumentEvent e) {
-                    // inutilisé car non fonctionnel :)
+                public void removeUpdate(final DocumentEvent e) {
+                    this.testEmpty();
+                }
+
+                public void testEmpty() {
+                    if (!TextReader.this.getText().equals("")) {
+                        InterfaceGraphique.this.getClient().interrompreUpdate();
+                    } else {
+                        InterfaceGraphique.this.getClient().reprendreUpdate();
+                    }
                 }
             });
         }

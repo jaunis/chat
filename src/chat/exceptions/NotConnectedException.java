@@ -1,6 +1,10 @@
 package chat.exceptions;
 
-
+/**
+ * Implémente une exception utilisée quand l'utilisateur adresse une requête au
+ * serveur alors qu'il n'est pas connecté.
+ * @author Daniel Lefevre, Jean Aunis
+ */
 public class NotConnectedException extends Exception {
 
     /**
@@ -12,6 +16,6 @@ public class NotConnectedException extends Exception {
      * Constructeur.
      */
     public NotConnectedException() {
-    	super("Vous n'êtes pas connecté.");
+        super("Vous n'êtes pas connecté.");
     }
 }

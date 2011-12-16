@@ -1,4 +1,4 @@
 /**
- * The main package.
+ * Le paquetage principal.
  */
 package chat;

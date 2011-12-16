@@ -5,14 +5,20 @@ package chat.client;
  * récupérer les derniers messages.
  * @author Daniel Lefevre
  */
-public class Updater extends Thread {
+public class MessageUpdater extends Thread {
 
     /**
      * Client actuel.
      */
     private Client client;
 
+    /**
+     * Booléen permettant d'arrêter la boucle de l'updater.
+     */
     private boolean continuer = true;
+    /**
+     * Booléen permettant de mettre en pause l'updater.
+     */
     private boolean pause = false;
 
     /**
@@ -20,25 +26,27 @@ public class Updater extends Thread {
      * @param clientIn
      *            le client
      */
-    public Updater(Client clientIn) {
+    public MessageUpdater(final Client clientIn) {
         super();
         this.client = clientIn;
     }
 
-    public void stopThread() {
-        this.continuer = false;
-    }
-
-    public void pause() {
+    /**
+     * Mettre en pause l'updater.
+     */
+    public final void pause() {
         this.pause = true;
     }
 
-    public void reprendre() {
+    /**
+     * Reprendre après une pause.
+     */
+    public final void reprendre() {
         this.pause = false;
     }
 
     @Override
-    public void run() {
+    public final void run() {
         while (this.continuer) {
             if (!this.pause) {
                 this.client.getLienServeur().getMessages();
@@ -49,5 +57,12 @@ public class Updater extends Thread {
                 }
             }
         }
+    }
+
+    /**
+     * Arrêter l'updater.
+     */
+    public final void stopThread() {
+        this.continuer = false;
     }
 }
