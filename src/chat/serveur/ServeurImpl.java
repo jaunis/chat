@@ -1,9 +1,6 @@
 package chat.serveur;
 
-import java.net.InetAddress;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
@@ -28,21 +25,6 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
         super();
     }
 
-    public static void main(String args[]) {
-        String URL;
-        try {
-            // Création du serveur de nom - rmiregistry
-            LocateRegistry.createRegistry(port);
-            // Création d'une instance de l'objet serveur
-            Serveur obj = new ServeurImpl();
-            // Calcul de l'URL du serveur
-            URL = "//" + InetAddress.getLocalHost().getHostName() + ":" + port
-                    + "/serveur";
-            Naming.rebind(URL, obj);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     
     /*
      * (non-Javadoc)
