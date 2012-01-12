@@ -4,7 +4,6 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.RemoteServer;
@@ -13,7 +12,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Date;
 
-import chat.client.Client;
 import chat.commun.Message;
 import chat.commun.Utilisateur;
 import chat.exceptions.AlreadyConnectedException;
@@ -37,7 +35,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
         try {
             url = "//" + InetAddress.getLocalHost().getHostAddress() + ":"
                     + ServeurImpl.port + "/serveur";
-            
+
             // Création du serveur de nom - rmiregistry
             LocateRegistry.createRegistry(ServeurImpl.port);
             // Création d'une instance de l'objet serveur
@@ -52,21 +50,20 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
             e.printStackTrace();
         }
     }
-    
+
     /*
      * (non-Javadoc)
      * @see chat.serveur.Serveur#connect(java.lang.String)
      */
     @Override
     public Message connect(String id) throws RemoteException,
-            IdAlreadyUsedException, AlreadyConnectedException 
-    {
-    	//si l'id est déjà utilisé, on renvoie une exception
-    	Utilisateur nouveau = new Utilisateur(id);
+            IdAlreadyUsedException, AlreadyConnectedException {
+        // si l'id est déjà utilisé, on renvoie une exception
+        Utilisateur nouveau = new Utilisateur(id);
         if (this.listeUtilisateurs.contains(nouveau))
             throw new IdAlreadyUsedException(id);
-        
-        //vérifie que le client n'est pas déjà connecté avec un autre id
+
+        // vérifie que le client n'est pas déjà connecté avec un autre id
         try {
             String reference = RemoteServer.getClientHost();
             for (Utilisateur u : this.listeUtilisateurs) {
@@ -77,10 +74,10 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
         } catch (ServerNotActiveException e) {
             throw new RemoteException("Erreur interne");
         }
-        
+
         /*
-         * si tout est "normal", on ajoute l'utilisateurs à la liste
-         * des utilisateurs connectés
+         * si tout est "normal", on ajoute l'utilisateurs à la liste des
+         * utilisateurs connectés
          */
         this.listeUtilisateurs.add(nouveau);
 
@@ -90,7 +87,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
         System.out.println(retour);
         return retour;
     }
-    
+
     /*
      * (non-Javadoc)
      * @see chat.serveur.Serveur#send(java.lang.String, chat.commun.Utilisateur)
@@ -138,18 +135,18 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     @Override
     public ArrayList<Utilisateur> who() throws RemoteException,
             NotConnectedException {
-        
-    	String reference;
+
+        String reference;
         try {
-        	//on vérifie que le client envoyant la requête est connu
-        	reference = RemoteServer.getClientHost();
+            // on vérifie que le client envoyant la requête est connu
+            reference = RemoteServer.getClientHost();
             boolean connecte = false;
             for (Utilisateur u : this.listeUtilisateurs) {
                 connecte |= u.getReference().equals(reference);
 
             }
-            
-            //si le client est connu, on renvoie la liste des utilisateurs
+
+            // si le client est connu, on renvoie la liste des utilisateurs
             if (connecte) {
                 System.out.println("Requête WHO");
                 return this.listeUtilisateurs;
@@ -160,7 +157,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
         }
 
     }
-    
+
     /*
      * (non-Javadoc)
      * @see chat.serveur.Serveur#getMessages(java.util.Date)
@@ -169,14 +166,15 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
     public ArrayList<Message> getMessages(Date date) throws RemoteException,
             NotConnectedException {
         try {
-        	//on vérifie que le client envoyant la requête est connu
+            // on vérifie que le client envoyant la requête est connu
             String reference = RemoteServer.getClientHost();
             boolean connecte = false;
             for (Utilisateur u : this.listeUtilisateurs) {
                 connecte |= u.getReference().equals(reference);
             }
-            
-            //si le client est connu, on génère la liste des messages à renvoyer.
+
+            // si le client est connu, on génère la liste des messages à
+            // renvoyer.
             if (connecte) {
                 ArrayList<Message> listeTemp = new ArrayList<>();
                 for (Message m : this.listeMessages) {
@@ -190,12 +188,15 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
             throw new RemoteException("Erreur interne.");
         }
     }
-    
+
     /**
-     * <p>Teste si l'utilisateur passé en paramètre possède la même référence
-     * que le client qui a initié la requête, et vérifie que l'utilisateur est
-     * connu.</p>
-     * @param u Utilisateur à valider
+     * <p>
+     * Teste si l'utilisateur passé en paramètre possède la même référence que
+     * le client qui a initié la requête, et vérifie que l'utilisateur est
+     * connu.
+     * </p>
+     * @param u
+     *            Utilisateur à valider
      * @return true si l'utilisateur est "valide"
      * @throws ServerNotActiveException
      */
