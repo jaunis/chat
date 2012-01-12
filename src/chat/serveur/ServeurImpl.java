@@ -43,6 +43,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
             // Création d'une instance de l'objet serveur
             Serveur obj = new ServeurImpl();
             Naming.rebind(url, obj);
+            System.out.println("Serveur lancé.");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {

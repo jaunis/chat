@@ -4,7 +4,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-
+import java.util.Scanner;
 import chat.client.Client;
 import chat.serveur.Serveur;
 import chat.serveur.ServeurImpl;
@@ -30,7 +30,11 @@ public final class Main {
         String url;
         String machineName = "DANIEL-PC";
         try {
-            url = "//" + machineName + ":" + ServeurImpl.port + "/serveur";
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Entrez le nom du serveur distant: ");
+            machineName = sc.nextLine();
+            System.out.println("Connexion en cours...");
+        	url = "//" + machineName + ":" + ServeurImpl.port + "/serveur";
 
             Serveur serveur = (Serveur) Naming.lookup(url);
             new Client(serveur);
