@@ -1,6 +1,6 @@
 package chat.client;
 
-import java.rmi.ConnectException;
+import java.net.ConnectException;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
