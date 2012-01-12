@@ -5,7 +5,6 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
-
 import chat.client.Client;
 import chat.serveur.Serveur;
 import chat.serveur.ServeurImpl;
