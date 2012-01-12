@@ -26,6 +26,7 @@ public final class Main {
      * @param args
      *            no arguments
      */
+    @SuppressWarnings("unused")
     public static void main(final String[] args) {
         String url;
         String machineName = "DANIEL-PC";
@@ -34,7 +35,7 @@ public final class Main {
             System.out.println("Entrez le nom du serveur distant: ");
             machineName = sc.nextLine();
             System.out.println("Connexion en cours...");
-        	url = "//" + machineName + ":" + ServeurImpl.port + "/serveur";
+            url = "//" + machineName + ":" + ServeurImpl.port + "/serveur";
 
             Serveur serveur = (Serveur) Naming.lookup(url);
             new Client(serveur);

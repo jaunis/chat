@@ -150,8 +150,8 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
             if (connecte) {
                 System.out.println("Requête WHO");
                 return this.listeUtilisateurs;
-            } else
-                throw new NotConnectedException();
+            }
+            throw new NotConnectedException();
         } catch (ServerNotActiveException e) {
             throw new RemoteException("Erreur interne.");
         }
@@ -182,8 +182,8 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
                         listeTemp.add(m);
                 }
                 return listeTemp;
-            } else
-                throw new NotConnectedException();
+            }
+            throw new NotConnectedException();
         } catch (ServerNotActiveException e) {
             throw new RemoteException("Erreur interne.");
         }
@@ -206,7 +206,7 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
         if (u == null)
             return false;
         else if (u.getReference().equals(reference)
-                && listeUtilisateurs.contains(u))
+                && this.listeUtilisateurs.contains(u))
             return true;
         else
             return false;
