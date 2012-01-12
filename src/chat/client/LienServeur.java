@@ -93,6 +93,10 @@ public class LienServeur {
         } catch (RemoteException e) {
             if (e.getCause() instanceof ConnectException) {
                 this.client.stopUpdater();
+                this.client
+                        .getInterfaceGraphique()
+                        .displayError(
+                                "La connexion au serveur a échoué. Veuillez relancer le programme.");
             }
             this.client.getInterfaceGraphique().displayError(e.getMessage());
         } catch (NotConnectedException e) {
