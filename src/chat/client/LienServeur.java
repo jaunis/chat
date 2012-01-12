@@ -1,5 +1,6 @@
 package chat.client;
 
+import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
@@ -90,6 +91,9 @@ public class LienServeur {
         try {
             this.updateMessages();
         } catch (RemoteException e) {
+            if (e.getCause() instanceof ConnectException) {
+                this.client.stopUpdater();
+            }
             this.client.getInterfaceGraphique().displayError(e.getMessage());
         } catch (NotConnectedException e) {
             this.client.getInterfaceGraphique().displayError(e.getMessage());
