@@ -1,12 +1,19 @@
 package chat.serveur;
 
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Date;
 
+import chat.client.Client;
 import chat.commun.Message;
 import chat.commun.Utilisateur;
 import chat.exceptions.AlreadyConnectedException;
@@ -25,6 +32,25 @@ public class ServeurImpl extends UnicastRemoteObject implements Serveur {
         super();
     }
 
+    public static void main(final String[] args) {
+        String url;
+        try {
+            url = "//" + InetAddress.getLocalHost().getHostAddress() + ":"
+                    + ServeurImpl.port + "/serveur";
+            
+            // Création du serveur de nom - rmiregistry
+            LocateRegistry.createRegistry(ServeurImpl.port);
+            // Création d'une instance de l'objet serveur
+            Serveur obj = new ServeurImpl();
+            Naming.rebind(url, obj);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
     
     /*
      * (non-Javadoc)

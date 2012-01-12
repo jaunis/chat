@@ -31,20 +31,12 @@ public final class Main {
      */
     public static void main(final String[] args) {
         String url;
+        String machineName = "DANIEL-PC";
         try {
-            url = "//" + InetAddress.getLocalHost().getHostAddress() + ":"
-                    + ServeurImpl.port + "/serveur";
-            
-            // Création du serveur de nom - rmiregistry
-            LocateRegistry.createRegistry(ServeurImpl.port);
-            // Création d'une instance de l'objet serveur
-            Serveur obj = new ServeurImpl();
-            Naming.rebind(url, obj);
-            
+            url = "//" + machineName + ":" + ServeurImpl.port + "/serveur";
+
             Serveur serveur = (Serveur) Naming.lookup(url);
             new Client(serveur);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (RemoteException e) {
